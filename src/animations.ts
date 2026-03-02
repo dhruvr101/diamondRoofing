@@ -145,30 +145,8 @@ export function initScrollReveal(): void {
     );
   }
 
-  // Hero content GSAP polish (supplements CSS animations)
-  gsap.fromTo(
-    '.hero-badge',
-    { opacity: 0, y: -16 },
-    { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out', delay: 0.2 }
-  );
-
-  gsap.fromTo(
-    '.hero-title',
-    { opacity: 0, y: 24 },
-    { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', delay: 0.5 }
-  );
-
-  gsap.fromTo(
-    '.hero-ctas',
-    { opacity: 0, y: 20 },
-    { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out', delay: 1.1 }
-  );
-
-  gsap.fromTo(
-    '.scroll-indicator',
-    { opacity: 0 },
-    { opacity: 1, duration: 1, delay: 1.6 }
-  );
+  // Hero animations are handled by CSS keyframes (fadeInDown/fadeInUp)
+  // No GSAP duplication needed here
 }
 
 // ---------- ANIMATED COUNTERS ----------
@@ -208,7 +186,6 @@ export function initCounters(): void {
 
 // ---------- SECTION PARALLAX ----------
 export function initParallax(): void {
-  // Subtle parallax on hero floating diamonds
   gsap.to('.fd', {
     y: '30%',
     ease: 'none',
@@ -218,5 +195,95 @@ export function initParallax(): void {
       end: 'bottom top',
       scrub: 1.5,
     },
+  });
+}
+
+// ---------- GALLERY ----------
+export function initGallery(): void {
+  initGalleryEntrance();
+  initGalleryTilt();
+  initGalleryLightbox();
+}
+
+function initGalleryEntrance(): void {
+  const items = document.querySelectorAll<HTMLElement>('.gallery-item');
+  if (!items.length) return;
+
+  items.forEach((item, i) => {
+    const col = i % 3;
+    const fromX = col === 0 ? -50 : col === 2 ? 50 : 0;
+    const fromY = col === 1 ? 60 : 30;
+
+    gsap.fromTo(
+      item,
+      { opacity: 0, x: fromX, y: fromY, scale: 0.93 },
+      {
+        opacity: 1,
+        x: 0,
+        y: 0,
+        scale: 1,
+        duration: 0.72,
+        ease: 'power3.out',
+        delay: (i % 3) * 0.08,
+        scrollTrigger: {
+          trigger: item,
+          start: 'top 88%',
+          once: true,
+        },
+      }
+    );
+  });
+}
+
+function initGalleryTilt(): void {
+  const items = document.querySelectorAll<HTMLElement>('.gallery-item[data-tilt]');
+
+  items.forEach((item) => {
+    item.addEventListener('mousemove', (e: MouseEvent) => {
+      const rect = item.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+      const y = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+      item.style.transform = `perspective(900px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) scale(1.03)`;
+      item.style.transition = 'transform 0.1s ease, box-shadow 0.3s ease';
+      item.style.zIndex = '3';
+    });
+
+    item.addEventListener('mouseleave', () => {
+      item.style.transform = 'perspective(900px) rotateY(0deg) rotateX(0deg) scale(1)';
+      item.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease';
+      item.style.zIndex = '';
+    });
+  });
+}
+
+function initGalleryLightbox(): void {
+  const lightbox = document.getElementById('galleryLightbox');
+  const lightboxImg = document.getElementById('lightboxImg') as HTMLImageElement | null;
+  const lightboxClose = document.getElementById('lightboxClose');
+
+  if (!lightbox || !lightboxImg) return;
+
+  document.querySelectorAll<HTMLElement>('.gallery-item').forEach((item) => {
+    item.addEventListener('click', () => {
+      const img = item.querySelector('img');
+      if (!img) return;
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt;
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  const close = () => {
+    lightbox.classList.remove('active');
+    document.body.style.overflow = '';
+  };
+
+  lightboxClose?.addEventListener('click', close);
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) close();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && lightbox.classList.contains('active')) close();
   });
 }

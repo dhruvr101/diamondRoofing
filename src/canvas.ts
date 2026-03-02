@@ -8,8 +8,23 @@ interface Particle {
   speedY: number;
   opacity: number;
   opacityDir: number;
-  color: string;
+  r: number;
+  g: number;
+  b: number;
 }
+
+// Fixed palette — soft whites and golds for hero overlay on cover image
+const PALETTE = [
+  { r: 255, g: 255, b: 255 },
+  { r: 251, g: 191, b:  36 },
+  { r: 255, g: 255, b: 255 },
+  { r: 255, g: 220, b: 130 },
+];
+
+const MAX_DIST    = 120;
+const MAX_DIST_SQ = MAX_DIST * MAX_DIST;
+const MOUSE_DIST  = 80;
+const MOUSE_DIST_SQ = MOUSE_DIST * MOUSE_DIST;
 
 export function initCanvas(): void {
   const canvas = document.getElementById('heroCanvas') as HTMLCanvasElement;
@@ -21,12 +36,9 @@ export function initCanvas(): void {
   let particles: Particle[] = [];
   let animId: number;
 
-  const COLORS = [
-    'rgba(0, 212, 255, 0.8)',
-    'rgba(255, 215, 0, 0.6)',
-    'rgba(123, 47, 255, 0.6)',
-    'rgba(255, 255, 255, 0.6)',
-  ];
+  // Mouse position tracked via event, applied inside RAF
+  let mouseX = -9999;
+  let mouseY = -9999;
 
   function resize() {
     width = canvas.offsetWidth;
@@ -42,6 +54,7 @@ export function initCanvas(): void {
   }
 
   function createParticle(): Particle {
+    const color = PALETTE[Math.floor(Math.random() * PALETTE.length)];
     return {
       x: Math.random() * width,
       y: Math.random() * height,
@@ -50,26 +63,33 @@ export function initCanvas(): void {
       speedY: (Math.random() - 0.5) * 0.3,
       opacity: Math.random() * 0.6 + 0.1,
       opacityDir: (Math.random() > 0.5 ? 1 : -1) * 0.003,
-      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+      r: color.r,
+      g: color.g,
+      b: color.b,
     };
   }
 
-  function drawConnections(p: Particle, index: number) {
-    for (let i = index + 1; i < particles.length; i++) {
-      const other = particles[i];
-      const dx = p.x - other.x;
-      const dy = p.y - other.y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      const maxDist = 120;
+  function drawConnections() {
+    // Set line style once for all connections
+    ctx.lineWidth = 0.5;
 
-      if (dist < maxDist) {
-        const alpha = (1 - dist / maxDist) * 0.12;
-        ctx.beginPath();
-        ctx.strokeStyle = `rgba(0, 212, 255, ${alpha})`;
-        ctx.lineWidth = 0.5;
-        ctx.moveTo(p.x, p.y);
-        ctx.lineTo(other.x, other.y);
-        ctx.stroke();
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      for (let j = i + 1; j < particles.length; j++) {
+        const other = particles[j];
+        const dx = p.x - other.x;
+        const dy = p.y - other.y;
+        const distSq = dx * dx + dy * dy;
+
+        if (distSq < MAX_DIST_SQ) {
+          // sqrt only when close enough to actually draw
+          const alpha = (1 - Math.sqrt(distSq) / MAX_DIST) * 0.12;
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(255,255,255,${(alpha * 0.45).toFixed(3)})`;
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(other.x, other.y);
+          ctx.stroke();
+        }
       }
     }
   }
@@ -77,38 +97,45 @@ export function initCanvas(): void {
   function tick() {
     ctx.clearRect(0, 0, width, height);
 
-    particles.forEach((p, i) => {
+    drawConnections();
+
+    particles.forEach((p) => {
       // Move
       p.x += p.speedX;
       p.y += p.speedY;
 
       // Wrap around
       if (p.x < -10) p.x = width + 10;
-      if (p.x > width + 10) p.x = -10;
+      else if (p.x > width + 10) p.x = -10;
       if (p.y < -10) p.y = height + 10;
-      if (p.y > height + 10) p.y = -10;
+      else if (p.y > height + 10) p.y = -10;
+
+      // Mouse repulsion applied inside RAF — consistent with frame rate
+      const dxM = p.x - mouseX;
+      const dyM = p.y - mouseY;
+      const distMSq = dxM * dxM + dyM * dyM;
+      if (distMSq < MOUSE_DIST_SQ && distMSq > 0) {
+        const distM = Math.sqrt(distMSq);
+        const force = (MOUSE_DIST - distM) / MOUSE_DIST;
+        p.x += (dxM / distM) * force * 1.5;
+        p.y += (dyM / distM) * force * 1.5;
+      }
 
       // Pulse opacity
       p.opacity += p.opacityDir;
       if (p.opacity > 0.8 || p.opacity < 0.05) p.opacityDir *= -1;
 
-      // Draw connection lines
-      drawConnections(p, i);
-
-      // Draw particle
+      // Draw particle — compose rgba directly from stored components
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      ctx.fillStyle = p.color.replace('0.8', p.opacity.toString()).replace('0.6', p.opacity.toString());
+      ctx.fillStyle = `rgba(${p.r},${p.g},${p.b},${p.opacity.toFixed(3)})`;
       ctx.fill();
 
-      // Glow for larger particles
+      // Glow for larger particles — simple circle, no gradient per frame
       if (p.size > 1.2) {
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size * 3, 0, Math.PI * 2);
-        const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 3);
-        grad.addColorStop(0, `rgba(0, 212, 255, ${p.opacity * 0.2})`);
-        grad.addColorStop(1, 'rgba(0, 212, 255, 0)');
-        ctx.fillStyle = grad;
+        ctx.arc(p.x, p.y, p.size * 4, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${p.r},${p.g},${p.b},${(p.opacity * 0.08).toFixed(3)})`;
         ctx.fill();
       }
     });
@@ -116,22 +143,10 @@ export function initCanvas(): void {
     animId = requestAnimationFrame(tick);
   }
 
-  // Mouse parallax
-  let mouseX = 0, mouseY = 0;
+  // Only store mouse position in handler; physics runs in RAF
   window.addEventListener('mousemove', (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
-    // Subtle parallax push on particles near mouse
-    particles.forEach(p => {
-      const dx = p.x - mouseX;
-      const dy = p.y - mouseY;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < 80) {
-        const force = (80 - dist) / 80;
-        p.x += (dx / dist) * force * 1.5;
-        p.y += (dy / dist) * force * 1.5;
-      }
-    });
   }, { passive: true });
 
   // Init

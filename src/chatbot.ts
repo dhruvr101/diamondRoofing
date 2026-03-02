@@ -1,11 +1,13 @@
 // chatbot.ts — Scripted AI chatbot widget (frontend-only)
 
+type IntentKey = 'estimate' | 'emergency' | 'solar' | 'areas' | 'default';
+
 interface BotResponse {
   text: string;
   delay?: number;
 }
 
-const RESPONSES: Record<string, BotResponse[]> = {
+const RESPONSES: Record<IntentKey, BotResponse[]> = {
   estimate: [
     { text: "Great! Getting a free estimate is easy. 🏠" },
     {
@@ -48,20 +50,34 @@ const RESPONSES: Record<string, BotResponse[]> = {
 };
 
 const INTRO: BotResponse[] = [
-  {
-    text: "Hi! I'm the Diamond in the Sky Roofing AI assistant. 👋",
-    delay: 1200,
-  },
-  {
-    text: "I can help you get a free estimate, answer questions about our services, or connect you with our team. What can I help you with today?",
-    delay: 2000,
-  },
+  { text: "Hi! I'm the Diamond in the Sky Roofing AI assistant. 👋", delay: 1200 },
+  { text: "I can help you get a free estimate, answer questions about our services, or connect you with our team. What can I help you with today?", delay: 2000 },
 ];
 
 function formatText(text: string): string {
   return text
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
     .replace(/\n\n/g, '<br><br>');
+}
+
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function wait(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function detectIntent(text: string): IntentKey {
+  const lower = text.toLowerCase();
+  if (/estimate|quote|price|cost|free/.test(lower)) return 'estimate';
+  if (/emergency|urgent|leak|broken|storm|damage|asap/.test(lower)) return 'emergency';
+  if (/solar|panel|energy|sun|electric/.test(lower)) return 'solar';
+  if (/area|location|cover|city|county|where/.test(lower)) return 'areas';
+  return 'default';
 }
 
 export function initChatbot(): void {
@@ -75,89 +91,19 @@ export function initChatbot(): void {
 
   let isOpen = false;
   let hasOpened = false;
+  // Sequence ID — increment to cancel in-flight async message loops
+  let sequenceId = 0;
 
-  function openChat() {
-    isOpen = true;
-    panel.style.display = 'flex';
-    // Force reflow then animate
-    requestAnimationFrame(() => {
-      panel.classList.add('open');
-    });
+  // ---- Message helpers (unified) ----
 
-    if (!hasOpened) {
-      hasOpened = true;
-      showIntro();
-    }
-  }
-
-  function closeChat() {
-    isOpen = false;
-    panel.classList.remove('open');
-    setTimeout(() => {
-      if (!isOpen) panel.style.display = 'none';
-    }, 320);
-  }
-
-  trigger.addEventListener('click', () => {
-    if (isOpen) closeChat();
-    else openChat();
-  });
-
-  closeBtn.addEventListener('click', closeChat);
-
-  // Quick reply chips
-  quickReplies.querySelectorAll<HTMLElement>('.quick-reply').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const replyKey = btn.dataset.reply || 'default';
-      const label = btn.textContent || '';
-      addUserMessage(label);
-      quickReplies.style.display = 'none';
-      showTypingThenRespond(replyKey);
-    });
-  });
-
-  // Send button / enter key
-  function handleSend() {
-    const text = input.value.trim();
-    if (!text) return;
-    input.value = '';
-    addUserMessage(text);
-    quickReplies.style.display = 'none';
-
-    const key = detectIntent(text);
-    showTypingThenRespond(key);
-  }
-
-  sendBtn.addEventListener('click', handleSend);
-  input.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') handleSend();
-  });
-
-  // ---- Helpers ----
-
-  function scrollToBottom() {
+  function addMessage(role: 'user' | 'bot', html: string) {
+    const msg = document.createElement('div');
+    msg.className = `chat-msg ${role}`;
+    msg.innerHTML = role === 'bot'
+      ? `<div class="msg-avatar">◆</div><div class="msg-bubble">${html}</div>`
+      : `<div class="msg-bubble">${html}</div>`;
+    messages.appendChild(msg);
     messages.scrollTop = messages.scrollHeight;
-  }
-
-  function addUserMessage(text: string) {
-    const msg = document.createElement('div');
-    msg.className = 'chat-msg user';
-    msg.innerHTML = `
-      <div class="msg-bubble">${escapeHtml(text)}</div>
-    `;
-    messages.appendChild(msg);
-    scrollToBottom();
-  }
-
-  function addBotMessage(text: string) {
-    const msg = document.createElement('div');
-    msg.className = 'chat-msg bot';
-    msg.innerHTML = `
-      <div class="msg-avatar">◆</div>
-      <div class="msg-bubble">${formatText(text)}</div>
-    `;
-    messages.appendChild(msg);
-    scrollToBottom();
   }
 
   function showTypingIndicator(): HTMLElement {
@@ -171,54 +117,71 @@ export function initChatbot(): void {
           <div class="typing-dot"></div>
           <div class="typing-dot"></div>
         </div>
-      </div>
-    `;
+      </div>`;
     messages.appendChild(typing);
-    scrollToBottom();
+    messages.scrollTop = messages.scrollHeight;
     return typing;
   }
 
-  async function showIntro() {
-    // Small delay before showing first message
-    await wait(800);
-
-    for (const response of INTRO) {
-      const typingEl = showTypingIndicator();
-      await wait(response.delay || 1000);
-      typingEl.remove();
-      addBotMessage(response.text);
-    }
-  }
-
-  async function showTypingThenRespond(key: string) {
-    const responses = RESPONSES[key] || RESPONSES.default;
-
+  async function runSequence(responses: BotResponse[], myId: number) {
     for (const response of responses) {
+      if (myId !== sequenceId) return;
       const typingEl = showTypingIndicator();
-      const thinkTime = response.delay ?? 900;
-      await wait(thinkTime);
+      await wait(response.delay ?? 900);
       typingEl.remove();
-      addBotMessage(response.text);
+      if (myId !== sequenceId) return;
+      addMessage('bot', formatText(response.text));
     }
   }
 
-  function detectIntent(text: string): string {
-    const lower = text.toLowerCase();
-    if (/estimate|quote|price|cost|free/.test(lower)) return 'estimate';
-    if (/emergency|urgent|leak|broken|storm|damage|asap/.test(lower)) return 'emergency';
-    if (/solar|panel|energy|sun|electric/.test(lower)) return 'solar';
-    if (/area|location|cover|city|county|where/.test(lower)) return 'areas';
-    return 'default';
+  // ---- Open / close ----
+
+  function openChat() {
+    isOpen = true;
+    panel.style.display = 'flex';
+    requestAnimationFrame(() => panel.classList.add('open'));
+
+    if (!hasOpened) {
+      hasOpened = true;
+      const myId = ++sequenceId;
+      wait(800).then(() => runSequence(INTRO, myId));
+    }
   }
 
-  function wait(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+  function closeChat() {
+    isOpen = false;
+    panel.classList.remove('open');
+    setTimeout(() => { if (!isOpen) panel.style.display = 'none'; }, 320);
   }
 
-  function escapeHtml(text: string): string {
-    return text
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;');
+  trigger.addEventListener('click', () => { if (isOpen) closeChat(); else openChat(); });
+  closeBtn.addEventListener('click', closeChat);
+
+  // ---- Quick replies ----
+
+  quickReplies.querySelectorAll<HTMLElement>('.quick-reply').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = (btn.dataset.reply || 'default') as IntentKey;
+      addMessage('user', escapeHtml(btn.textContent || ''));
+      quickReplies.style.display = 'none';
+      const myId = ++sequenceId;
+      runSequence(RESPONSES[key] ?? RESPONSES.default, myId);
+    });
+  });
+
+  // ---- Free-text send ----
+
+  function handleSend() {
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    addMessage('user', escapeHtml(text));
+    quickReplies.style.display = 'none';
+    const key = detectIntent(text);
+    const myId = ++sequenceId;
+    runSequence(RESPONSES[key], myId);
   }
+
+  sendBtn.addEventListener('click', handleSend);
+  input.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleSend(); });
 }

@@ -1,70 +1,68 @@
 // funnel.ts — Multi-step contact funnel logic
 
 interface FunnelState {
-  step: number;
   property: string;
   service: string;
   timeline: string;
 }
 
-const state: FunnelState = {
-  step: 1,
-  property: '',
-  service: '',
-  timeline: '',
-};
+const state: FunnelState = { property: '', service: '', timeline: '' };
+
+// Cached DOM elements — queried once at init
+let progressSteps: Element[] = [];
+let progressLines: (HTMLElement | null)[] = [];
+let funnelSteps: Element[] = [];
 
 function setProgress(step: number) {
-  // Update step dots
-  document.querySelectorAll('.progress-step').forEach((dot, i) => {
-    const stepNum = i + 1;
+  progressSteps.forEach((dot, i) => {
+    const n = i + 1;
     dot.classList.remove('active', 'done');
-    if (stepNum < step) dot.classList.add('done');
-    else if (stepNum === step) dot.classList.add('active');
+    if (n < step) dot.classList.add('done');
+    else if (n === step) dot.classList.add('active');
   });
-
-  // Update progress lines
-  const lines = ['pLine1', 'pLine2', 'pLine3'];
-  lines.forEach((id, i) => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.style.width = i < step - 1 ? '100%' : '0%';
+  progressLines.forEach((el, i) => {
+    if (el) el.style.width = i < step - 1 ? '100%' : '0%';
   });
 }
 
 function showStep(step: number | 'success') {
-  document.querySelectorAll('.funnel-step').forEach(s => s.classList.remove('active'));
+  funnelSteps.forEach(s => s.classList.remove('active'));
   const id = step === 'success' ? 'stepSuccess' : `step${step}`;
   const el = document.getElementById(id);
-  if (el) {
-    el.classList.add('active');
-    // Trigger reflow for animation restart
-    void (el as HTMLElement).offsetWidth;
-  }
+  if (el) el.classList.add('active');
 }
 
 function goToStep(step: number) {
-  state.step = step;
   showStep(step);
   setProgress(step);
 }
 
-export function initFunnel(): void {
-  // --- STEP 1: Property type ---
-  document.querySelectorAll('#step1 .choice-card').forEach(card => {
+function bindChoiceCards(stepId: string, onSelect: (value: string) => void) {
+  const cards = document.querySelectorAll(`#${stepId} .choice-card`);
+  cards.forEach(card => {
     card.addEventListener('click', () => {
-      document.querySelectorAll('#step1 .choice-card').forEach(c => c.classList.remove('selected'));
+      cards.forEach(c => c.classList.remove('selected'));
       card.classList.add('selected');
-      state.property = (card as HTMLElement).dataset.value || '';
-
-      setTimeout(() => goToStep(2), 320);
+      onSelect((card as HTMLElement).dataset.value || '');
     });
+  });
+}
+
+export function initFunnel(): void {
+  // Cache elements once
+  progressSteps = Array.from(document.querySelectorAll('.progress-step'));
+  progressLines = ['pLine1', 'pLine2', 'pLine3'].map(id => document.getElementById(id));
+  funnelSteps = Array.from(document.querySelectorAll('.funnel-step'));
+
+  // --- STEP 1: Property type ---
+  bindChoiceCards('step1', (value) => {
+    state.property = value;
+    setTimeout(() => goToStep(2), 320);
   });
 
   // --- STEP 2: Service chips ---
   const chips = document.querySelectorAll('#step2 .chip');
   const next2 = document.getElementById('next2') as HTMLButtonElement;
-  const back2 = document.getElementById('back2');
 
   chips.forEach(chip => {
     chip.addEventListener('click', () => {
@@ -75,22 +73,13 @@ export function initFunnel(): void {
     });
   });
 
-  next2?.addEventListener('click', () => {
-    if (!state.service) return;
-    goToStep(3);
-  });
-
-  back2?.addEventListener('click', () => goToStep(1));
+  next2?.addEventListener('click', () => { if (state.service) goToStep(3); });
+  document.getElementById('back2')?.addEventListener('click', () => goToStep(1));
 
   // --- STEP 3: Timeline ---
-  document.querySelectorAll('#step3 .choice-card').forEach(card => {
-    card.addEventListener('click', () => {
-      document.querySelectorAll('#step3 .choice-card').forEach(c => c.classList.remove('selected'));
-      card.classList.add('selected');
-      state.timeline = (card as HTMLElement).dataset.value || '';
-
-      setTimeout(() => goToStep(4), 320);
-    });
+  bindChoiceCards('step3', (value) => {
+    state.timeline = value;
+    setTimeout(() => goToStep(4), 320);
   });
 
   document.getElementById('back3')?.addEventListener('click', () => goToStep(2));
@@ -101,23 +90,10 @@ export function initFunnel(): void {
   const form = document.getElementById('contactForm') as HTMLFormElement;
   form?.addEventListener('submit', (e) => {
     e.preventDefault();
-
-    // Collect form data
     const inputs = form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input, textarea');
-    const formData: Record<string, string> = {
-      property: state.property,
-      service: state.service,
-      timeline: state.timeline,
-    };
-    inputs.forEach(input => {
-      if (input.placeholder) {
-        formData[input.type || 'textarea'] = input.value;
-      }
-    });
-
+    const formData: Record<string, string> = { ...state };
+    inputs.forEach(input => { if (input.placeholder) formData[input.placeholder] = input.value; });
     console.log('Diamond Roofing Estimate Request:', formData);
-
-    // Show success
     setProgress(5);
     showStep('success');
   });
