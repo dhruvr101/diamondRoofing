@@ -1,24 +1,26 @@
-import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.ts'
+// main.ts — Diamond in the Sky Roofing entry point
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
+import './style.css';
+import { initNav } from './nav';
+import { initCanvas } from './canvas';
+import { initTypewriter, initScrollReveal, initCounters, initParallax } from './animations';
+import { initFunnel } from './funnel';
+import { initChatbot } from './chatbot';
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+function init() {
+  initNav();
+  initCanvas();
+  initTypewriter();
+  initScrollReveal();
+  initCounters();
+  initParallax();
+  initFunnel();
+  initChatbot();
+}
+
+// Run after DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}

@@ -4,10 +4,585 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>diamondroofing</title>
+    <meta name="description" content="Diamond in the Sky Roofing — Premier roofing and solar services in San Diego, Riverside, and Orange County. Licensed #1117747. Call 760-410-2340 for a free estimate." />
+    <meta name="keywords" content="roofing San Diego, roof repair, roof replacement, solar installation, North County San Diego roofing, emergency roof repair, commercial roofing" />
+    <title>Diamond in the Sky Roofing | Lic#1117747 | San Diego's Premier Roofer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/src/style.css" />
   </head>
   <body>
-    <div id="app"></div>
+
+    <!-- NAVIGATION -->
+    <nav id="navbar">
+      <div class="nav-inner">
+        <a href="#home" class="nav-logo">
+          <span class="diamond-icon">◆</span>
+          <span class="logo-text">Diamond in the Sky<span class="logo-sub">Roofing</span></span>
+        </a>
+        <ul class="nav-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#areas">Areas</a></li>
+          <li><a href="#solar">Solar</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <a href="tel:7604102340" class="nav-cta">
+          <span class="pulse-dot"></span>
+          Call Now
+        </a>
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+      <div class="mobile-menu" id="mobileMenu">
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#areas">Areas</a>
+        <a href="#solar">Solar</a>
+        <a href="#contact">Contact</a>
+        <a href="tel:7604102340" class="mobile-cta">Call 760-410-2340</a>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section id="home" class="hero">
+      <canvas id="heroCanvas"></canvas>
+      <div class="hero-bg-gradient"></div>
+      <div class="floating-diamonds">
+        <div class="fd fd-1">◆</div>
+        <div class="fd fd-2">◇</div>
+        <div class="fd fd-3">◆</div>
+        <div class="fd fd-4">◇</div>
+        <div class="fd fd-5">◆</div>
+      </div>
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="pulse-dot"></span>
+          Licensed &amp; Insured · Lic#1117747
+        </div>
+        <h1 class="hero-title">
+          <span class="hero-title-line1">Diamond in the Sky</span>
+          <span class="hero-title-accent">Roofing</span>
+        </h1>
+        <p class="hero-subtitle">
+          <span id="typewriter"></span><span class="cursor">|</span>
+        </p>
+        <p class="hero-desc">San Diego County · Riverside County · Orange County</p>
+        <div class="hero-ctas">
+          <a href="#contact" class="btn btn-gold">
+            Get Free Estimate
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="tel:7604102340" class="btn btn-glass">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+            760-410-2340
+          </a>
+        </div>
+      </div>
+      <div class="scroll-indicator">
+        <span>Scroll</span>
+        <div class="scroll-arrow"></div>
+      </div>
+    </section>
+
+    <!-- TRUST TICKER -->
+    <div class="trust-ticker">
+      <div class="ticker-track">
+        <span>◆ Lic#1117747</span>
+        <span>◆ San Diego County</span>
+        <span>◆ Riverside County</span>
+        <span>◆ Orange County</span>
+        <span>◆ Free Estimates</span>
+        <span>◆ 24/7 Emergency</span>
+        <span>◆ Fully Insured</span>
+        <span>◆ Licensed &amp; Bonded</span>
+        <span>◆ Lic#1117747</span>
+        <span>◆ San Diego County</span>
+        <span>◆ Riverside County</span>
+        <span>◆ Orange County</span>
+        <span>◆ Free Estimates</span>
+        <span>◆ 24/7 Emergency</span>
+        <span>◆ Fully Insured</span>
+        <span>◆ Licensed &amp; Bonded</span>
+      </div>
+    </div>
+
+    <!-- SERVICES -->
+    <section id="services" class="section services-section">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-tag">What We Do</span>
+          <h2>Roofing &amp; Solar Solutions</h2>
+          <p>Comprehensive services for residential and commercial properties across Southern California.</p>
+        </div>
+        <div class="services-grid">
+          <div class="service-card reveal-card">
+            <div class="card-icon">🏠</div>
+            <div class="card-content">
+              <h3>Residential Roofing</h3>
+              <p>Complete residential solutions from traditional shingles to modern metal roofs. Tailored to your home, style, and budget.</p>
+              <a href="#contact" class="card-link">Get Estimate <span>→</span></a>
+            </div>
+          </div>
+          <div class="service-card reveal-card">
+            <div class="card-icon">🏢</div>
+            <div class="card-content">
+              <h3>Commercial Roofing</h3>
+              <p>Expert commercial roofing for businesses of all sizes. TPO, EPDM, flat roofs, metal roofing, and more.</p>
+              <a href="#contact" class="card-link">Get Estimate <span>→</span></a>
+            </div>
+          </div>
+          <div class="service-card reveal-card">
+            <div class="card-icon">🔧</div>
+            <div class="card-content">
+              <h3>Roof Repair</h3>
+              <p>Leaky roof, missing shingles, storm damage — our team handles any repair, big or small, with speed and precision.</p>
+              <a href="#contact" class="card-link">Get Estimate <span>→</span></a>
+            </div>
+          </div>
+          <div class="service-card reveal-card">
+            <div class="card-icon">✨</div>
+            <div class="card-content">
+              <h3>Roof Replacement</h3>
+              <p>Full roof replacement using only the highest quality materials. We'll guide you from selection to seamless installation.</p>
+              <a href="#contact" class="card-link">Get Estimate <span>→</span></a>
+            </div>
+          </div>
+          <div class="service-card reveal-card emergency-card">
+            <div class="badge-24">24/7</div>
+            <div class="card-icon">⚡</div>
+            <div class="card-content">
+              <h3>Emergency Roofing</h3>
+              <p>When disaster strikes, we respond. 24/7 emergency services to protect your property from further damage. Call now.</p>
+              <a href="tel:7604102340" class="card-link urgent">Call Now <span>→</span></a>
+            </div>
+          </div>
+          <div class="service-card reveal-card solar-card">
+            <div class="card-icon">☀️</div>
+            <div class="card-content">
+              <h3>Solar Install &amp; Removal</h3>
+              <p>One contractor for both your roof and solar system. Clean, safe installation with zero leaks — guaranteed.</p>
+              <a href="#solar" class="card-link">Learn More <span>→</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="section about-section">
+      <div class="container">
+        <div class="about-grid">
+          <div class="about-text reveal">
+            <span class="section-tag">Our Story</span>
+            <h2>Built on Quality,<br>Driven by Results</h2>
+            <p>Diamond in the Sky Roofing was founded by <strong>Duane Sibley</strong>, who has grown it into a hardworking team dedicated to quality craftsmanship since 2020. We believe in full transparency — from the initial consultation to the final inspection, you're informed every step of the way.</p>
+            <p>We use only the highest quality materials and the latest roofing techniques to ensure your roof is durable, beautiful, and built to last.</p>
+            <div class="about-values">
+              <div class="value-item">
+                <span class="value-icon">◆</span>
+                <span>Transparency &amp; Communication</span>
+              </div>
+              <div class="value-item">
+                <span class="value-icon">◆</span>
+                <span>Premium Quality Materials</span>
+              </div>
+              <div class="value-item">
+                <span class="value-icon">◆</span>
+                <span>Licensed, Bonded &amp; Insured</span>
+              </div>
+            </div>
+          </div>
+          <div class="stats-grid reveal">
+            <div class="stat-card">
+              <div class="stat-number" data-target="1000" data-suffix="+">0</div>
+              <div class="stat-label">Roofs Completed</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number" data-target="3" data-suffix="">0</div>
+              <div class="stat-label">Counties Covered</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number" data-target="5" data-suffix="+">0</div>
+              <div class="stat-label">Years in Business</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number" data-target="24" data-suffix="/7">0</div>
+              <div class="stat-label">Emergency Service</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOLAR -->
+    <section id="solar" class="section solar-section">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-tag">Clean Energy</span>
+          <h2>Solar Install &amp; Removal</h2>
+          <p>One contractor for both your roof and solar. No leaks, no shortcuts — fully watertight every time.</p>
+        </div>
+        <div class="solar-grid">
+          <div class="solar-card reveal-card">
+            <div class="solar-icon">🔆</div>
+            <h3>Residential Solar</h3>
+            <p>Reduce your electricity bills with high-efficiency solar panel installation designed for your home's specific energy needs.</p>
+          </div>
+          <div class="solar-card reveal-card">
+            <div class="solar-icon">🏭</div>
+            <h3>Commercial Solar</h3>
+            <p>Large-scale systems for businesses, warehouses, medical buildings, retail centers, and apartment complexes.</p>
+          </div>
+          <div class="solar-card reveal-card">
+            <div class="solar-icon">🔄</div>
+            <h3>Solar Removal &amp; Re-Install</h3>
+            <p>Need your panels removed before a roof replacement? We handle the full cycle — removal, new roof, reinstall.</p>
+          </div>
+          <div class="solar-card reveal-card">
+            <div class="solar-icon">⚡</div>
+            <h3>Emergency Solar Repair</h3>
+            <p>Storm-damaged panels? System down? Our emergency team responds fast to get your energy system back online.</p>
+          </div>
+        </div>
+        <div class="solar-cta reveal">
+          <div class="solar-checklist">
+            <div class="check-item"><span class="check">✓</span> Cutting-edge solar technology for maximum efficiency</div>
+            <div class="check-item"><span class="check">✓</span> Expert installation by certified professionals</div>
+            <div class="check-item"><span class="check">✓</span> Affordable pricing with flexible financing plans</div>
+            <div class="check-item"><span class="check">✓</span> Compatible with all roofing types — tile, shingle, flat, metal</div>
+            <div class="check-item"><span class="check">✓</span> Commitment to sustainability &amp; energy independence</div>
+          </div>
+          <a href="#contact" class="btn btn-gold">Get Free Solar Estimate</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICE AREAS -->
+    <section id="areas" class="section areas-section">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-tag">Where We Work</span>
+          <h2>Serving Southern California</h2>
+          <p>Covering all of San Diego County, Riverside County, and Orange County.</p>
+        </div>
+        <div class="areas-counties reveal">
+          <div class="county-block">
+            <h3>San Diego County</h3>
+            <div class="city-badges">
+              <span class="city-badge">San Diego</span>
+              <span class="city-badge">La Jolla</span>
+              <span class="city-badge">Oceanside</span>
+              <span class="city-badge">Carlsbad</span>
+              <span class="city-badge">Encinitas</span>
+              <span class="city-badge">San Marcos</span>
+              <span class="city-badge">Escondido</span>
+              <span class="city-badge">Vista</span>
+              <span class="city-badge">Poway</span>
+              <span class="city-badge">Solana Beach</span>
+              <span class="city-badge">Del Mar</span>
+              <span class="city-badge">Chula Vista</span>
+              <span class="city-badge">El Cajon</span>
+              <span class="city-badge">La Mesa</span>
+              <span class="city-badge">National City</span>
+              <span class="city-badge">Santee</span>
+              <span class="city-badge">Rancho Bernardo</span>
+              <span class="city-badge">Mira Mesa</span>
+              <span class="city-badge">Clairemont</span>
+              <span class="city-badge">Pacific Beach</span>
+              <span class="city-badge">Fallbrook</span>
+              <span class="city-badge">Bonsall</span>
+              <span class="city-badge">Valley Center</span>
+              <span class="city-badge">Imperial Beach</span>
+              <span class="city-badge">Coronado</span>
+              <span class="city-badge">Lemon Grove</span>
+              <span class="city-badge">4S Ranch</span>
+            </div>
+          </div>
+          <div class="county-block">
+            <h3>Riverside County</h3>
+            <div class="city-badges">
+              <span class="city-badge">Riverside</span>
+              <span class="city-badge">Temecula</span>
+              <span class="city-badge">Murrieta</span>
+              <span class="city-badge">Menifee</span>
+              <span class="city-badge">Corona</span>
+              <span class="city-badge">Moreno Valley</span>
+            </div>
+          </div>
+          <div class="county-block">
+            <h3>Orange County</h3>
+            <div class="city-badges">
+              <span class="city-badge">Irvine</span>
+              <span class="city-badge">Anaheim</span>
+              <span class="city-badge">Santa Ana</span>
+              <span class="city-badge">Laguna Niguel</span>
+              <span class="city-badge">Mission Viejo</span>
+              <span class="city-badge">San Clemente</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT / FUNNEL -->
+    <section id="contact" class="section contact-section">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-tag">Free Estimate</span>
+          <h2>Get Your Free Quote Today</h2>
+          <p>Takes less than 2 minutes. No obligation. We'll reach out within 24 hours.</p>
+        </div>
+        <div class="funnel-wrapper reveal">
+          <div class="funnel-progress">
+            <div class="progress-steps">
+              <div class="progress-step active" data-step="1"><span>1</span></div>
+              <div class="progress-line"><div class="progress-line-fill" id="pLine1"></div></div>
+              <div class="progress-step" data-step="2"><span>2</span></div>
+              <div class="progress-line"><div class="progress-line-fill" id="pLine2"></div></div>
+              <div class="progress-step" data-step="3"><span>3</span></div>
+              <div class="progress-line"><div class="progress-line-fill" id="pLine3"></div></div>
+              <div class="progress-step" data-step="4"><span>4</span></div>
+            </div>
+            <div class="progress-labels">
+              <span>Property</span>
+              <span>Service</span>
+              <span>Timeline</span>
+              <span>Contact</span>
+            </div>
+          </div>
+
+          <!-- Step 1 -->
+          <div class="funnel-step active" id="step1">
+            <h3>What type of property?</h3>
+            <div class="choice-cards">
+              <div class="choice-card" data-value="residential">
+                <div class="choice-icon">🏠</div>
+                <div class="choice-label">Residential</div>
+                <div class="choice-desc">Home, condo, or townhouse</div>
+              </div>
+              <div class="choice-card" data-value="commercial">
+                <div class="choice-icon">🏢</div>
+                <div class="choice-label">Commercial</div>
+                <div class="choice-desc">Business, warehouse, or multi-unit</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="funnel-step" id="step2">
+            <h3>What service do you need?</h3>
+            <div class="chip-grid">
+              <div class="chip" data-value="repair">Roof Repair</div>
+              <div class="chip" data-value="replacement">Roof Replacement</div>
+              <div class="chip" data-value="new">New Installation</div>
+              <div class="chip" data-value="emergency">Emergency Repair</div>
+              <div class="chip" data-value="solar">Solar Install/Removal</div>
+              <div class="chip" data-value="inspection">Roof Inspection</div>
+            </div>
+            <div class="funnel-nav">
+              <button class="btn-back" id="back2">← Back</button>
+              <button class="btn-next" id="next2" disabled>Next →</button>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="funnel-step" id="step3">
+            <h3>When do you need service?</h3>
+            <div class="choice-cards timeline-cards">
+              <div class="choice-card" data-value="asap">
+                <div class="choice-icon">🚨</div>
+                <div class="choice-label">ASAP</div>
+                <div class="choice-desc">Urgent / emergency</div>
+              </div>
+              <div class="choice-card" data-value="month">
+                <div class="choice-icon">📅</div>
+                <div class="choice-label">This Month</div>
+                <div class="choice-desc">Within 30 days</div>
+              </div>
+              <div class="choice-card" data-value="quarter">
+                <div class="choice-icon">🗓️</div>
+                <div class="choice-label">1–3 Months</div>
+                <div class="choice-desc">Planning ahead</div>
+              </div>
+              <div class="choice-card" data-value="planning">
+                <div class="choice-icon">📋</div>
+                <div class="choice-label">Just Planning</div>
+                <div class="choice-desc">Getting quotes</div>
+              </div>
+            </div>
+            <div class="funnel-nav">
+              <button class="btn-back" id="back3">← Back</button>
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="funnel-step" id="step4">
+            <h3>Your contact information</h3>
+            <form class="contact-form" id="contactForm">
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Full Name *</label>
+                  <input type="text" placeholder="John Smith" required />
+                </div>
+                <div class="form-group">
+                  <label>Phone Number *</label>
+                  <input type="tel" placeholder="(760) 000-0000" required />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Email Address</label>
+                  <input type="email" placeholder="john@email.com" />
+                </div>
+                <div class="form-group">
+                  <label>Property Address</label>
+                  <input type="text" placeholder="123 Main St, San Diego, CA" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Additional Details</label>
+                <textarea placeholder="Describe your roofing needs, any existing damage, or questions..."></textarea>
+              </div>
+              <div class="funnel-nav">
+                <button type="button" class="btn-back" id="back4">← Back</button>
+                <button type="submit" class="btn btn-gold">Submit Free Estimate Request</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Success -->
+          <div class="funnel-step" id="stepSuccess">
+            <div class="success-screen">
+              <div class="success-checkmark">
+                <svg viewBox="0 0 52 52">
+                  <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+                  <path class="checkmark-check" fill="none" d="M14 27l8 8 16-16"/>
+                </svg>
+              </div>
+              <h3>Request Sent!</h3>
+              <p>Thank you! We'll reach out within 24 hours with your free estimate. Have an emergency? Call us directly.</p>
+              <a href="tel:7604102340" class="btn btn-gold" style="margin-top: 1.5rem;">Call 760-410-2340</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-alt reveal">
+          <div class="alt-card">
+            <span class="alt-icon">📞</span>
+            <div>
+              <div class="alt-label">Call or Text</div>
+              <a href="tel:7604102340" class="alt-value">760-410-2340</a>
+            </div>
+          </div>
+          <div class="alt-divider"></div>
+          <div class="alt-card">
+            <span class="alt-icon">🕐</span>
+            <div>
+              <div class="alt-label">Emergency Line</div>
+              <div class="alt-value">24/7 Available</div>
+            </div>
+          </div>
+          <div class="alt-divider"></div>
+          <div class="alt-card">
+            <span class="alt-icon">◆</span>
+            <div>
+              <div class="alt-label">License</div>
+              <div class="alt-value">#1117747</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <div class="footer-logo">
+              <span class="diamond-icon">◆</span>
+              <span>Diamond in the Sky Roofing</span>
+            </div>
+            <p>Premier roofing and solar services across Southern California. Quality you can count on.</p>
+            <div class="footer-contact">
+              <a href="tel:7604102340">760-410-2340</a>
+              <span>Lic# 1117747</span>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h4>Services</h4>
+            <ul>
+              <li><a href="#services">Residential Roofing</a></li>
+              <li><a href="#services">Commercial Roofing</a></li>
+              <li><a href="#services">Roof Repair</a></li>
+              <li><a href="#services">Roof Replacement</a></li>
+              <li><a href="#services">Emergency Roofing</a></li>
+              <li><a href="#solar">Solar Install</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Service Areas</h4>
+            <ul>
+              <li><a href="#areas">San Diego County</a></li>
+              <li><a href="#areas">Riverside County</a></li>
+              <li><a href="#areas">Orange County</a></li>
+              <li><a href="#areas">Carlsbad</a></li>
+              <li><a href="#areas">Oceanside</a></li>
+              <li><a href="#areas">Encinitas</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Company</h4>
+            <ul>
+              <li><a href="#about">About Us</a></li>
+              <li><a href="#contact">Get a Quote</a></li>
+              <li><a href="tel:7604102340">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>© 2026 Diamond in the Sky Roofing · License #1117747 · All Rights Reserved</p>
+          <p>Serving San Diego County, Riverside County &amp; Orange County</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- CHATBOT WIDGET -->
+    <div class="chatbot-widget" id="chatbotWidget">
+      <div class="chatbot-panel" id="chatbotPanel">
+        <div class="chatbot-header">
+          <div class="chatbot-avatar">
+            <span>◆</span>
+          </div>
+          <div class="chatbot-title">
+            <div class="chatbot-name">DIS AI Assistant</div>
+            <div class="chatbot-status"><span class="online-dot"></span> Online</div>
+          </div>
+          <button class="chatbot-close" id="chatbotClose">✕</button>
+        </div>
+        <div class="chatbot-messages" id="chatbotMessages"></div>
+        <div class="chatbot-quick-replies" id="quickReplies">
+          <button class="quick-reply" data-reply="estimate">Get Free Estimate</button>
+          <button class="quick-reply" data-reply="emergency">Emergency Repair</button>
+          <button class="quick-reply" data-reply="solar">Solar Info</button>
+          <button class="quick-reply" data-reply="areas">Service Areas</button>
+        </div>
+        <div class="chatbot-input-row">
+          <input type="text" class="chatbot-input" id="chatbotInput" placeholder="Type a message..." />
+          <button class="chatbot-send" id="chatbotSend">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+      </div>
+      <button class="chatbot-trigger" id="chatbotTrigger">
+        <span class="chatbot-diamond">◆</span>
+        <span class="chatbot-label">Chat with us</span>
+      </button>
+    </div>
+
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
