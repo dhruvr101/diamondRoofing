@@ -7,6 +7,51 @@ import { initTypewriter, initScrollReveal, initCounters, initParallax, initGalle
 import { initFunnel } from './funnel';
 import { initChatbot } from './chatbot';
 
+function initTestimonialCarousel(): void {
+  const track = document.querySelector('.testimonials-slider') as HTMLElement | null;
+  if (!track) return;
+
+  const cards = Array.from(track.querySelectorAll('.testimonial-card')) as HTMLElement[];
+  const dots = Array.from(document.querySelectorAll('.testimonial-dot')) as HTMLElement[];
+  const total = cards.length;
+  let current = 0;
+  let autoTimer: ReturnType<typeof setInterval>;
+
+  function goTo(index: number): void {
+    current = ((index % total) + total) % total;
+    const cardWidth = (track!.parentElement as HTMLElement).offsetWidth;
+    track!.style.transform = `translateX(-${current * cardWidth}px)`;
+    dots.forEach((d, i) => d.classList.toggle('active', i === current));
+  }
+
+  function next(): void { goTo(current + 1); }
+
+  function startAuto(): void {
+    autoTimer = setInterval(next, 4500);
+  }
+  function stopAuto(): void {
+    clearInterval(autoTimer);
+  }
+
+  document.querySelector('.carousel-prev')?.addEventListener('click', () => { stopAuto(); goTo(current - 1); startAuto(); });
+  document.querySelector('.carousel-next')?.addEventListener('click', () => { stopAuto(); goTo(current + 1); startAuto(); });
+
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => { stopAuto(); goTo(i); startAuto(); });
+  });
+
+  // Touch/swipe support
+  let touchStartX = 0;
+  track.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; stopAuto(); }, { passive: true });
+  track.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 50) dx < 0 ? goTo(current + 1) : goTo(current - 1);
+    startAuto();
+  }, { passive: true });
+
+  startAuto();
+}
+
 function init() {
   initNav();
   initCanvas();
@@ -18,6 +63,7 @@ function init() {
   initMapAnimation();
   initFunnel();
   initChatbot();
+  initTestimonialCarousel();
 }
 
 // Run after DOM is ready
