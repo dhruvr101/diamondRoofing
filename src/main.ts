@@ -63,7 +63,44 @@ function init() {
   initMapAnimation();
   initFunnel();
   initChatbot();
-  initTestimonialCarousel();
+
+  // Mobile-only auto-scroll for testimonials, centers each card, loops, and supports swipe
+  if (window.innerWidth <= 600) {
+    const slider = document.querySelector('.testimonials-slider');
+    const cards = slider ? Array.from(slider.querySelectorAll('.testimonial-card')) : [];
+    let currentIndex = 0;
+    const totalCards = Math.min(cards.length, 6); // Oscillate over 6 testimonials
+    function scrollToCard(index: number) {
+      if (!slider || totalCards === 0) return;
+      const card = cards[index];
+      const left = card.offsetLeft - (slider.clientWidth - card.clientWidth) / 2;
+      slider.scrollTo({ left, behavior: 'smooth' });
+    }
+    if (slider && totalCards > 0) {
+      scrollToCard(0);
+      setInterval(() => {
+        currentIndex = (currentIndex + 1) % totalCards;
+        scrollToCard(currentIndex);
+      }, 1000);
+
+      // Swipe support
+      let touchStartX = 0;
+      slider.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+      }, { passive: true });
+      slider.addEventListener('touchend', (e) => {
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        if (Math.abs(dx) > 50) {
+          if (dx < 0) {
+            currentIndex = (currentIndex + 1) % totalCards;
+          } else {
+            currentIndex = (currentIndex - 1 + totalCards) % totalCards;
+          }
+          scrollToCard(currentIndex);
+        }
+      }, { passive: true });
+    }
+  }
 }
 
 // Run after DOM is ready

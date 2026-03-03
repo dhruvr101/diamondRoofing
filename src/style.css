@@ -1,3 +1,21 @@
+@media (max-width: 600px) {
+  .services-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .service-card {
+    width: 94vw;
+    max-width: 94vw;
+    margin: 0 auto;
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+    position: sticky;
+    top: 1.5rem;
+    z-index: 1;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+}
 /* Prevent body scroll when chatbot input is focused on mobile */
 .chatbot-lock-scroll {
   overflow: hidden !important;
@@ -64,6 +82,9 @@
 
 .testimonials-section {
   background: var(--bg-primary);
+  padding: 2rem 1rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .testimonials-slider {
@@ -72,6 +93,11 @@
   justify-content: center;
   flex-wrap: wrap;
   margin-top: 2rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 .testimonial-card {
   background: var(--bg-card);
@@ -80,15 +106,43 @@
   padding: 2.5rem 2rem 2rem 2rem;
   max-width: 340px;
   min-width: 260px;
+  width: 100%;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
   transition: box-shadow 0.2s, transform 0.2s;
 }
-.testimonial-card:hover {
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-6px) scale(1.03);
+
+@media (max-width: 600px) {
+  .testimonials-slider {
+    gap: 1rem;
+    flex-direction: row;
+    align-items: flex-start;
+    overflow-x: hidden;
+    flex-wrap: nowrap;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .testimonials-slider::-webkit-scrollbar {
+    display: none;
+  }
+  .testimonial-card {
+    width: 80vw;
+    min-width: 80vw;
+    max-width: 80vw;
+    height: 320px;
+    min-height: 320px;
+    max-height: 320px;
+    flex: 0 0 80vw;
+    box-sizing: border-box;
+    padding: 1.5rem 1rem 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
 }
 .testimonial-quote {
   font-size: 1.1rem;
