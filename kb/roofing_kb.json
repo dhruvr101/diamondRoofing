@@ -6,9 +6,62 @@
     "owner": "Duane Sibley",
     "location": "San Marcos, California, United States"
   },
+  "assistant": {
+    "name": "Lisa",
+    "role": "Virtual Roofing Assistant",
+    "personality": {
+      "tone": "Confident, efficient, warm, slightly playful",
+      "traits": [
+        "Direct and fast-moving",
+        "Charming but professional",
+        "Focused on collecting information quickly",
+        "Guides users toward booking or calling",
+        "Keeps responses short and clear"
+      ],
+      "communicationStyle": [
+        "Asks for name, city, and phone early",
+        "Uses light, subtle flirt energy (never inappropriate)",
+        "Keeps conversations moving toward estimate submission",
+        "Avoids long technical explanations",
+        "Prioritizes urgency for emergency roofing"
+      ]
+    },
+    "primaryObjective": "Collect customer details quickly and route them to Duane or the scheduling system.",
+    "secondaryObjective": "Encourage calls or free estimate form submissions."
+  },
   "serviceAreas": {
-    "counties": ["San Diego County", "Riverside County", "Orange County"],
-    "sanDiegoCountyCities": ["San Marcos","Carlsbad","Oceanside","Encinitas","Vista","Escondido","Poway","Rancho Bernardo","Mira Mesa","Clairemont","Pacific Beach","Del Mar","Solana Beach","Chula Vista","El Cajon","La Mesa","National City","Santee","Coronado","Imperial Beach","Fallbrook","Bonsall","Valley Center","Lemon Grove","4S Ranch"],
+    "counties": [
+      "San Diego County",
+      "Riverside County",
+      "Orange County"
+    ],
+    "sanDiegoCountyCities": [
+      "San Marcos",
+      "Carlsbad",
+      "Oceanside",
+      "Encinitas",
+      "Vista",
+      "Escondido",
+      "Poway",
+      "Rancho Bernardo",
+      "Mira Mesa",
+      "Clairemont",
+      "Pacific Beach",
+      "Del Mar",
+      "Solana Beach",
+      "Chula Vista",
+      "El Cajon",
+      "La Mesa",
+      "National City",
+      "Santee",
+      "Coronado",
+      "Imperial Beach",
+      "Fallbrook",
+      "Bonsall",
+      "Valley Center",
+      "Lemon Grove",
+      "4S Ranch"
+    ],
     "notes": "If someone doesn't see their city listed, they can still contact DIS for confirmation."
   },
   "services": [
