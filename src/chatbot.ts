@@ -1,4 +1,4 @@
-// chatbot.ts — Scripted AI chatbot widget (frontend-only)
+// chatbot.ts — Hybrid AI + scripted chatbot widget (UI unchanged)
 
 type IntentKey = 'estimate' | 'emergency' | 'solar' | 'areas' | 'default';
 
@@ -9,52 +9,32 @@ interface BotResponse {
 
 const RESPONSES: Record<IntentKey, BotResponse[]> = {
   estimate: [
-    { text: "Great! Getting a free estimate is easy. 🏠" },
-    {
-      text: "We cover all of San Diego County, Riverside County, and Orange County. Just fill out our quick 2-minute form and we'll reach out within 24 hours — or call us directly at **760-410-2340** for an immediate response!",
-      delay: 1200,
-    },
+    { text: "Great! I can help you get a free estimate. 🏠" },
+    { text: "I’ll ask a few quick questions (takes ~1 minute).", delay: 900 },
   ],
   emergency: [
     { text: "Emergency roofing is available **24/7**! ⚡" },
     {
-      text: "Please call us immediately at **760-410-2340** for emergency service. Our team responds fast to protect your property from further damage. Don't wait — every minute counts with roof emergencies!",
-      delay: 1000,
-    },
-  ],
-  solar: [
-    { text: "Diamond in the Sky Roofing is your one-stop shop for both roofing AND solar! ☀️" },
-    {
-      text: "We handle complete solar panel installation, removal, and re-installation. Being roofing experts first means your solar goes in leak-free, every time. We serve residential and commercial clients across Southern California.",
-      delay: 1200,
-    },
-    {
-      text: "Want a free solar consultation? Call **760-410-2340** or use our estimate form!",
-      delay: 2200,
-    },
-  ],
-  areas: [
-    { text: "We cover a wide area! 🗺️" },
-    {
-      text: "**San Diego County** — all cities including Carlsbad, Oceanside, Encinitas, San Marcos, Escondido, Vista, Poway, and 20+ more.\n\n**Riverside County** — Temecula, Murrieta, Menifee, Corona, and surrounding areas.\n\n**Orange County** — Irvine, Anaheim, Mission Viejo, San Clemente, and more.",
-      delay: 1000,
-    },
-  ],
-  default: [
-    { text: "Thanks for your message! 😊" },
-    {
-      text: "For the fastest response, call or text us at **760-410-2340**. We're available for emergency service 24/7. Or use our free estimate form above!",
+      text: "Please call us immediately at **760-410-2340** for emergency service. Our team responds fast to protect your property from further damage.",
       delay: 900,
     },
   ],
+  solar: [
+    { text: "We do solar install + removal/reinstall — roofing experts first, solar second. ☀️", delay: 700 },
+  ],
+  areas: [
+    { text: "We cover **San Diego County**, **Riverside County**, and **Orange County**. 🗺️", delay: 700 },
+  ],
+  default: [],
 };
 
 const INTRO: BotResponse[] = [
-  { text: "Hi! I'm the Diamond in the Sky Roofing AI assistant. 👋", delay: 1200 },
-  { text: "I can help you get a free estimate, answer questions about our services, or connect you with our team. What can I help you with today?", delay: 2000 },
+  { text: "Hi! I'm the Diamond in the Sky Roofing AI assistant. 👋", delay: 900 },
+  { text: "Ask me anything about roofing, solar, pricing, or service areas — or type **estimate** to get a quote.", delay: 1200 },
 ];
 
 function formatText(text: string): string {
+  // supports **bold** and paragraph breaks; also safe for our controlled HTML links
   return text
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
     .replace(/\n\n/g, '<br><br>');
@@ -73,11 +53,84 @@ function wait(ms: number): Promise<void> {
 
 function detectIntent(text: string): IntentKey {
   const lower = text.toLowerCase();
+  if (/emergency|urgent|leak|storm|damage|asap/.test(lower)) return 'emergency';
   if (/estimate|quote|price|cost|free/.test(lower)) return 'estimate';
-  if (/emergency|urgent|leak|broken|storm|damage|asap/.test(lower)) return 'emergency';
   if (/solar|panel|energy|sun|electric/.test(lower)) return 'solar';
   if (/area|location|cover|city|county|where/.test(lower)) return 'areas';
   return 'default';
+}
+
+// ---- AI call (backend) ----
+async function getAIReply(message: string): Promise<string> {
+  try {
+    const res = await fetch("http://localhost:3001/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message }),
+    });
+    const data = await res.json();
+    return (data.reply || "").toString();
+  } catch {
+    return "Sorry — I had trouble responding. Please call/text **760-410-2340** for help.";
+  }
+}
+
+// ---- Lead Capture (Step 3) ----
+
+type LeadService = 'Repair' | 'Replacement' | 'Inspection' | 'Emergency' | 'Solar' | 'Other';
+type LeadProperty = 'Residential' | 'Commercial';
+
+type LeadDraft = {
+  service?: LeadService;
+  property?: LeadProperty;
+  cityOrZip?: string;
+  address?: string;
+  roofType?: string;     // shingle/tile/flat/metal/unknown
+  approxSize?: string;   // sq ft or small/medium/large
+  issue?: string;        // leak/storm/age/etc
+  timeline?: string;     // asap/this month/1-3 months/planning
+  name?: string;
+  phone?: string;
+  email?: string;
+};
+
+type LeadStepKey =
+  | 'service'
+  | 'property'
+  | 'cityOrZip'
+  | 'roofType'
+  | 'approxSize'
+  | 'issue'
+  | 'timeline'
+  | 'name'
+  | 'phone'
+  | 'email'
+  | 'confirm';
+
+const LEAD_STEPS: Array<{ key: LeadStepKey; question: string; optional?: boolean }> = [
+  { key: 'service', question: "What do you need help with? (Repair / Replacement / Inspection / Emergency / Solar)" },
+  { key: 'property', question: "Is this **Residential** or **Commercial**?" },
+  { key: 'cityOrZip', question: "What city (or ZIP) is the property in?" },
+  { key: 'roofType', question: "What roof type? (Shingle / Tile / Flat / Metal / Not sure)" },
+  { key: 'approxSize', question: "Approx roof size? (sq ft if you know — or Small / Medium / Large)" },
+  { key: 'issue', question: "What’s the main issue or goal? (leak, storm damage, aging roof, new install, etc.)" },
+  { key: 'timeline', question: "When do you need service? (ASAP / This month / 1–3 months / Just planning)" },
+  { key: 'name', question: "What’s your full name?" },
+  { key: 'phone', question: "Best phone number to reach you?" },
+  { key: 'email', question: "Email (optional) — you can type **skip** if you prefer.", optional: true },
+  { key: 'confirm', question: "Perfect. Want me to submit this request to our team? (yes/no)" },
+];
+
+function normalizeYesNo(text: string): 'yes' | 'no' | null {
+  const t = text.trim().toLowerCase();
+  if (/^(y|yes|yeah|yep|sure|ok|okay)$/i.test(t)) return 'yes';
+  if (/^(n|no|nope|nah)$/i.test(t)) return 'no';
+  return null;
+}
+
+function isSkip(text: string) {
+  const t = text.trim().toLowerCase();
+  return t === 'skip' || t === 'pass';
 }
 
 export function initChatbot(): void {
@@ -91,11 +144,14 @@ export function initChatbot(): void {
 
   let isOpen = false;
   let hasOpened = false;
-  // Sequence ID — increment to cancel in-flight async message loops
   let sequenceId = 0;
 
-  // ---- Message helpers (unified) ----
+  // Lead flow state
+  let leadActive = false;
+  let leadStepIndex = 0;
+  let leadDraft: LeadDraft = {};
 
+  // ---- Message helpers (unified) ----
   function addMessage(role: 'user' | 'bot', html: string) {
     const msg = document.createElement('div');
     msg.className = `chat-msg ${role}`;
@@ -127,14 +183,12 @@ export function initChatbot(): void {
     for (const response of responses) {
       if (myId !== sequenceId) return;
       const typingEl = showTypingIndicator();
-      await wait(response.delay ?? 900);
+      await wait(response.delay ?? 800);
       typingEl.remove();
       if (myId !== sequenceId) return;
       addMessage('bot', formatText(response.text));
     }
   }
-
-  // ---- Open / close ----
 
   function openChat() {
     isOpen = true;
@@ -144,7 +198,7 @@ export function initChatbot(): void {
     if (!hasOpened) {
       hasOpened = true;
       const myId = ++sequenceId;
-      wait(800).then(() => runSequence(INTRO, myId));
+      wait(500).then(() => runSequence(INTRO, myId));
     }
   }
 
@@ -157,31 +211,248 @@ export function initChatbot(): void {
   trigger.addEventListener('click', () => { if (isOpen) closeChat(); else openChat(); });
   closeBtn.addEventListener('click', closeChat);
 
-  // ---- Quick replies ----
+  // ---- Lead flow helpers ----
 
+  async function askLeadQuestion(myId: number) {
+    const step = LEAD_STEPS[leadStepIndex];
+    if (!step) return;
+    const typingEl = showTypingIndicator();
+    await wait(650);
+    typingEl.remove();
+    if (myId !== sequenceId) return;
+
+    addMessage(
+      'bot',
+      formatText(`${step.question}\n\n(You can type **cancel** anytime.)`)
+    );
+  }
+
+  function startLeadFlow(myId: number) {
+    leadActive = true;
+    leadStepIndex = 0;
+    leadDraft = {};
+    runSequence(RESPONSES.estimate, myId).then(() => {
+      if (myId !== sequenceId) return;
+      askLeadQuestion(myId);
+    });
+  }
+
+  function cancelLeadFlow() {
+    leadActive = false;
+    leadStepIndex = 0;
+    leadDraft = {};
+    addMessage(
+      'bot',
+      formatText(`No worries — cancelled. If you want a quote later, type **estimate**.\n\nOr call/text **760-410-2340** anytime.`)
+    );
+  }
+
+  function renderLeadSummary(): string {
+    const rows: Array<[string, string | undefined]> = [
+      ["Service", leadDraft.service],
+      ["Property", leadDraft.property],
+      ["City/ZIP", leadDraft.cityOrZip],
+      ["Roof Type", leadDraft.roofType],
+      ["Approx Size", leadDraft.approxSize],
+      ["Issue", leadDraft.issue],
+      ["Timeline", leadDraft.timeline],
+      ["Name", leadDraft.name],
+      ["Phone", leadDraft.phone],
+      ["Email", leadDraft.email],
+    ];
+
+    const lines = rows
+      .filter(([, v]) => v && v.trim().length > 0)
+      .map(([k, v]) => `• <strong>${k}:</strong> ${escapeHtml(v as string)}`)
+      .join('<br>');
+
+    const contactLink = `<a href="#contact" style="text-decoration:underline;">open the contact form</a>`;
+    return `${lines}<br><br>You can also ${contactLink} or call/text <strong>760-410-2340</strong>.`;
+  }
+
+  function setLeadField(key: LeadStepKey, value: string) {
+    const v = value.trim();
+    switch (key) {
+      case 'service':
+        leadDraft.service = (v.charAt(0).toUpperCase() + v.slice(1)) as LeadService;
+        break;
+      case 'property':
+        leadDraft.property = (v.toLowerCase().includes('comm') ? 'Commercial' : 'Residential');
+        break;
+      case 'cityOrZip':
+        leadDraft.cityOrZip = v;
+        break;
+      case 'roofType':
+        leadDraft.roofType = v;
+        break;
+      case 'approxSize':
+        leadDraft.approxSize = v;
+        break;
+      case 'issue':
+        leadDraft.issue = v;
+        break;
+      case 'timeline':
+        leadDraft.timeline = v;
+        break;
+      case 'name':
+        leadDraft.name = v;
+        break;
+      case 'phone':
+        leadDraft.phone = v;
+        break;
+      case 'email':
+        leadDraft.email = v;
+        break;
+      default:
+        break;
+    }
+  }
+
+  async function handleLeadInput(text: string) {
+    const myId = ++sequenceId;
+
+    const lower = text.trim().toLowerCase();
+    if (lower === 'cancel' || lower === 'stop' || lower === 'never mind') {
+      cancelLeadFlow();
+      return;
+    }
+
+    const step = LEAD_STEPS[leadStepIndex];
+    if (!step) return;
+
+// confirm step
+if (step.key === 'confirm') {
+  const yn = normalizeYesNo(text);
+
+  if (!yn) {
+    addMessage('bot', formatText("Please reply **yes** or **no**."));
+    return;
+  }
+
+  if (yn === 'no') {
+    leadActive = false;
+    addMessage(
+      'bot',
+      formatText("All good. If you want, you can still call/text **760-410-2340** or use the contact form.")
+    );
+    return;
+  }
+
+  // 🔥 YES → Send to backend
+  const typingEl = showTypingIndicator();
+
+  try {
+    const res = await fetch("http://localhost:3001/api/lead", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(leadDraft),
+    });
+
+    typingEl.remove();
+
+    if (res.ok) {
+      addMessage(
+        'bot',
+        formatText("✅ Sent! Our team will contact you shortly.\n\nIf urgent, call/text **760-410-2340**.")
+      );
+    } else {
+      addMessage(
+        'bot',
+        formatText("⚠️ I couldn’t submit it right now. Please call/text **760-410-2340**.")
+      );
+    }
+  } catch (err) {
+    typingEl.remove();
+    addMessage(
+      'bot',
+      formatText("⚠️ Submission failed. Please call/text **760-410-2340**.")
+    );
+  }
+
+  leadActive = false;
+  leadStepIndex = 0;
+  leadDraft = {};
+  return;
+}
+
+    // optional email step
+    if (step.optional && isSkip(text)) {
+      leadStepIndex++;
+      await askLeadQuestion(myId);
+      return;
+    }
+
+    setLeadField(step.key, text);
+    leadStepIndex++;
+
+    // if next step is confirm, show summary first
+    if (LEAD_STEPS[leadStepIndex]?.key === 'confirm') {
+      addMessage('bot', renderLeadSummary());
+    }
+
+    await askLeadQuestion(myId);
+  }
+
+  // ---- Quick replies ----
   quickReplies.querySelectorAll<HTMLElement>('.quick-reply').forEach(btn => {
     btn.addEventListener('click', () => {
       const key = (btn.dataset.reply || 'default') as IntentKey;
       addMessage('user', escapeHtml(btn.textContent || ''));
       quickReplies.style.display = 'none';
+
       const myId = ++sequenceId;
+
+      // If they hit estimate quick reply → start lead flow
+      if (key === 'estimate') {
+        startLeadFlow(myId);
+        return;
+      }
+
       runSequence(RESPONSES[key] ?? RESPONSES.default, myId);
     });
   });
 
   // ---- Free-text send ----
-
-  function handleSend() {
+  async function handleSend() {
     const text = input.value.trim();
     if (!text) return;
+
     input.value = '';
     addMessage('user', escapeHtml(text));
     quickReplies.style.display = 'none';
-    const key = detectIntent(text);
+
+    // If lead flow is active, we handle step-by-step Qs
+    if (leadActive) {
+      await handleLeadInput(text);
+      return;
+    }
+
+    const intent = detectIntent(text);
+
+    // Emergency override always scripted
+    if (intent === 'emergency') {
+      const myId = ++sequenceId;
+      runSequence(RESPONSES.emergency, myId);
+      return;
+    }
+
+    // If they ask for estimate → start lead flow
+    if (intent === 'estimate') {
+      const myId = ++sequenceId;
+      startLeadFlow(myId);
+      return;
+    }
+
+    // Otherwise: AI answer using KB server
     const myId = ++sequenceId;
-    runSequence(RESPONSES[key], myId);
+    const typingEl = showTypingIndicator();
+    const aiReply = await getAIReply(text);
+    typingEl.remove();
+    if (myId !== sequenceId) return;
+
+    addMessage('bot', formatText(aiReply));
   }
 
-  sendBtn.addEventListener('click', handleSend);
-  input.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleSend(); });
+  sendBtn.addEventListener('click', () => { void handleSend(); });
+  input.addEventListener('keydown', (e) => { if (e.key === 'Enter') void handleSend(); });
 }

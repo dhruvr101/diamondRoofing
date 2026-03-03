@@ -1,0 +1,35 @@
+{
+  "business": {
+    "name": "Diamond in the Sky Roofing",
+    "license": "1117747",
+    "phone": "760-410-2340",
+    "owner": "Duane Sibley",
+    "location": "San Marcos, California, United States"
+  },
+  "serviceAreas": {
+    "counties": ["San Diego County", "Riverside County", "Orange County"],
+    "sanDiegoCountyCities": ["San Marcos","Carlsbad","Oceanside","Encinitas","Vista","Escondido","Poway","Rancho Bernardo","Mira Mesa","Clairemont","Pacific Beach","Del Mar","Solana Beach","Chula Vista","El Cajon","La Mesa","National City","Santee","Coronado","Imperial Beach","Fallbrook","Bonsall","Valley Center","Lemon Grove","4S Ranch"],
+    "notes": "If someone doesn't see their city listed, they can still contact DIS for confirmation."
+  },
+  "services": [
+    "Residential Roofing",
+    "Commercial Roofing",
+    "Roof Repair",
+    "Roof Replacement",
+    "Emergency Roofing (24/7)",
+    "Solar Install",
+    "Solar Removal & Reinstall",
+    "Roof Inspections",
+    "Gutter Services",
+    "Skylights"
+  ],
+  "positioning": [
+    "Roofing experts first, solar specialists second (leak-free installs).",
+    "Free estimates available.",
+    "Emergency roofing available 24/7."
+  ],
+  "cta": {
+    "callText": "Call/Text 760-410-2340",
+    "estimate": "Use the website free estimate form or request via chat."
+  }
+}
