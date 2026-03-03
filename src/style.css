@@ -1,3 +1,7 @@
+/* Prevent body scroll when chatbot input is focused on mobile */
+.chatbot-lock-scroll {
+  overflow: hidden !important;
+}
 /* Accordion FAQ */
 
 .faq-accordion {

@@ -9,8 +9,8 @@ interface BotResponse {
 
 const RESPONSES: Record<IntentKey, BotResponse[]> = {
   estimate: [
-    { text: "Great! I can help you get a free estimate. 🏠" },
-    { text: "I’ll ask a few quick questions (takes ~1 minute).", delay: 900 },
+    { text: "Want to know why Diamond in the Sky Roofing stands out? Here are some reasons:" },
+    { text: "• Leak-free installs by true roofing experts (not just solar techs).\n• Licensed, insured, and local.\n• 24/7 emergency service.\n• Free estimates and honest advice.\n• Hundreds of 5-star reviews.\n• Owner-led team with decades of experience.", delay: 900 },
   ],
   emergency: [
     { text: "Emergency roofing is available **24/7**! ⚡" },
@@ -25,12 +25,15 @@ const RESPONSES: Record<IntentKey, BotResponse[]> = {
   areas: [
     { text: "We cover **San Diego County**, **Riverside County**, and **Orange County**. 🗺️", delay: 700 },
   ],
-  default: [],
+  default: [
+    { text: "Here are some common questions about our company:" },
+    { text: "**Why choose Diamond in the Sky Roofing over others?**\n- We’re true roofing specialists, not just solar installers.\n- We guarantee leak-free work and stand behind every job.\n- We’re local, licensed, and owner-led.\n- 24/7 emergency service.\n- Free estimates and honest advice.\n- Hundreds of 5-star reviews.\n\n**Do you offer emergency service?**\n- Yes, 24/7 emergency roofing is available. Call/text 760-410-2340.\n\n**Are you licensed and insured?**\n- Yes, CA License #1117747. Fully insured.\n\n**Do you work with solar?**\n- Yes, we do solar install, removal, and re-install — always leak-free.\n\n**What areas do you serve?**\n- San Diego, Riverside, and Orange County.\n\nAsk anything else or type 'estimate' for a quote!", delay: 1200 }
+  ],
 };
 
 const INTRO: BotResponse[] = [
-  { text: "Hi! I'm the Diamond in the Sky Roofing AI assistant. 👋", delay: 900 },
-  { text: "Ask me anything about roofing, solar, pricing, or service areas — or type **estimate** to get a quote.", delay: 1200 },
+  { text: "Hi! I'm Lisa from Diamond in the Sky Roofing. 👋", delay: 900 },
+  { text: "How can we help you today?", delay: 1200 },
 ];
 
 function formatText(text: string): string {
@@ -141,6 +144,16 @@ export function initChatbot(): void {
   const input = document.getElementById('chatbotInput') as HTMLInputElement;
   const sendBtn = document.getElementById('chatbotSend')!;
   const quickReplies = document.getElementById('quickReplies')!;
+
+    // Simple mobile scroll lock when input is focused
+    input.addEventListener('focus', () => {
+      if (window.innerWidth <= 600) {
+        document.body.classList.add('chatbot-lock-scroll');
+      }
+    });
+    input.addEventListener('blur', () => {
+      document.body.classList.remove('chatbot-lock-scroll');
+    });
 
   let isOpen = false;
   let hasOpened = false;
@@ -402,12 +415,7 @@ if (step.key === 'confirm') {
 
       const myId = ++sequenceId;
 
-      // If they hit estimate quick reply → start lead flow
-      if (key === 'estimate') {
-        startLeadFlow(myId);
-        return;
-      }
-
+      // If they hit a common question, show pre-authored response
       runSequence(RESPONSES[key] ?? RESPONSES.default, myId);
     });
   });
