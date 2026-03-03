@@ -1,38 +1,67 @@
-/* === Custom Sections: FAQ, Testimonials, Blog === */
-.faqs-section {
-  background: var(--bg-secondary);
+/* Accordion FAQ */
+
+.faq-accordion {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
-.faqs-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
-}
-.faq-card {
+
+.faq-item {
   background: var(--bg-card);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(0,0,0,0.08);
+  overflow: hidden;
   box-shadow: var(--shadow-sm);
-  padding: 2rem 1.5rem;
-  transition: box-shadow 0.2s;
-  border-left: 4px solid var(--blue);
+  transition: var(--transition);
 }
-.faq-card h3 {
+
+.faq-question {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 22px 28px;
   font-family: var(--font-heading);
-  font-size: 1.15rem;
-  margin-bottom: 0.5rem;
-  color: var(--blue);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
 }
-.faq-card p {
+
+.faq-icon {
+  transition: transform 0.3s ease;
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease, padding 0.35s ease;
+  padding: 0 28px;
+}
+
+.faq-answer p {
   color: var(--text-secondary);
+  padding-bottom: 20px;
 }
-.faq-card:hover {
-  box-shadow: var(--shadow-md);
-  border-left: 4px solid var(--gold);
+
+/* Active state */
+.faq-item.active .faq-answer {
+  max-height: 200px;
+  padding-top: 10px;
+}
+
+.faq-item.active .faq-icon {
+  transform: rotate(180deg);
 }
 
 .testimonials-section {
   background: var(--bg-primary);
 }
+
 .testimonials-slider {
   display: flex;
   gap: 2rem;

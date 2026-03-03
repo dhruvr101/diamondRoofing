@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="src/style.css" />
+
   </head>
   <body>
 
@@ -92,28 +93,6 @@
         <div class="scroll-arrow"></div>
       </div>
     </section>
-
-    <!-- TRUST TICKER -->
-    <div class="trust-ticker">
-      <div class="ticker-track">
-        <span>◆ Lic#1117747</span>
-        <span>◆ San Diego County</span>
-        <span>◆ Riverside County</span>
-        <span>◆ Orange County</span>
-        <span>◆ Free Estimates</span>
-        <span>◆ 24/7 Emergency</span>
-        <span>◆ Fully Insured</span>
-        <span>◆ Licensed &amp; Bonded</span>
-        <span>◆ Lic#1117747</span>
-        <span>◆ San Diego County</span>
-        <span>◆ Riverside County</span>
-        <span>◆ Orange County</span>
-        <span>◆ Free Estimates</span>
-        <span>◆ 24/7 Emergency</span>
-        <span>◆ Fully Insured</span>
-        <span>◆ Licensed &amp; Bonded</span>
-      </div>
-    </div>
 
     <!-- SERVICES -->
     <section id="services" class="section services-section">
@@ -592,6 +571,156 @@
     </section>
 
     <!-- FOOTER -->
+
+
+    <!-- CHATBOT WIDGET -->
+    <div class="chatbot-widget" id="chatbotWidget">
+      <div class="chatbot-panel" id="chatbotPanel">
+        <div class="chatbot-header">
+          <div class="chatbot-avatar">
+            <span>◆</span>
+          </div>
+          <div class="chatbot-title">
+            <div class="chatbot-name">DIS AI Assistant</div>
+            <div class="chatbot-status"><span class="online-dot"></span> Online</div>
+          </div>
+          <button class="chatbot-close" id="chatbotClose">✕</button>
+        </div>
+        <div class="chatbot-messages" id="chatbotMessages"></div>
+        <div class="chatbot-quick-replies" id="quickReplies">
+          <button class="quick-reply" data-reply="estimate">Get Free Estimate</button>
+          <button class="quick-reply" data-reply="emergency">Emergency Repair</button>
+          <button class="quick-reply" data-reply="solar">Solar Info</button>
+          <button class="quick-reply" data-reply="areas">Service Areas</button>
+        </div>
+        <div class="chatbot-input-row">
+          <input type="text" class="chatbot-input" id="chatbotInput" placeholder="Type a message..." />
+          <button class="chatbot-send" id="chatbotSend">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+      </div>
+      <button class="chatbot-trigger" id="chatbotTrigger">
+        <span class="chatbot-diamond">◆</span>
+        <span class="chatbot-label">Chat with us</span>
+      </button>
+    </div>
+     
+    <script type="module" src="/src/main.ts"></script>
+      <!-- Hero Section with Video -->
+      <section id="hero" style="text-align:center; padding: 3rem 0; background: #f8f9fa;">
+        <h1 style="font-size:2.5rem; margin-bottom:1rem;">Welcome to Diamond Roofing</h1>
+        <p style="font-size:1.2rem; margin-bottom:2rem;">Your trusted partner for premium roofing solutions.</p>
+        <div style="max-width: 700px; margin: 0 auto;">
+          <iframe title="vimeo-player" src="https://player.vimeo.com/video/1057724847?h=efd1fb9380" width="100%" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen style="border-radius:12px; box-shadow:0 4px 24px rgba(0,0,0,0.12);"></iframe>
+        </div>
+      </section>
+
+<section id="faqs" class="section faqs-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>FAQs</h2>
+    </div>
+
+    <div class="faq-accordion">
+
+      <div class="faq-item">
+        <button class="faq-question">
+          What types of roofing do you specialize in?
+          <span class="faq-icon">⌄</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            We offer installation and repair for asphalt shingles, metal roofing,
+            tile, and flat roofs. Our team handles both residential and commercial projects.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          How long does a typical roof replacement take?
+          <span class="faq-icon">⌄</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Most residential roof replacements are completed in 1–3 days,
+            depending on size and weather conditions.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Are your services insured and guaranteed?
+          <span class="faq-icon">⌄</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes, we are fully insured and provide a 10-year workmanship warranty
+            on all new installations.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Do you provide free estimates?
+          <span class="faq-icon">⌄</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Absolutely. Contact us anytime to schedule a free,
+            no-obligation estimate.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+      <!-- Testimonials Section -->
+      <section id="testimonials" class="section testimonials-section">
+        <div class="container">
+          <div class="section-header reveal">
+            <span class="section-tag">Testimonials</span>
+            <h2>What Our Clients Say</h2>
+          </div>
+          <div class="testimonials-slider">
+            <div class="testimonial-card">
+              <div class="testimonial-quote">“Diamond Roofing exceeded our expectations! The crew was professional, fast, and the new roof looks amazing.”</div>
+              <div class="testimonial-author">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah M." class="testimonial-avatar" />
+                <div>
+                  <span class="testimonial-name">Sarah M.</span>
+                  <span class="testimonial-role">Homeowner</span>
+                </div>
+              </div>
+            </div>
+            <div class="testimonial-card">
+              <div class="testimonial-quote">“We had a leak during a storm and they responded immediately. Highly recommend for reliability and quality!”</div>
+              <div class="testimonial-author">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="James T." class="testimonial-avatar" />
+                <div>
+                  <span class="testimonial-name">James T.</span>
+                  <span class="testimonial-role">Business Owner</span>
+                </div>
+              </div>
+            </div>
+            <div class="testimonial-card">
+              <div class="testimonial-quote">“Great communication, fair pricing, and top-notch workmanship. Will use again!”</div>
+              <div class="testimonial-author">
+                <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Priya S." class="testimonial-avatar" />
+                <div>
+                  <span class="testimonial-name">Priya S.</span>
+                  <span class="testimonial-role">Property Manager</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     <footer class="footer">
       <div class="container">
         <div class="footer-grid">
@@ -644,118 +773,7 @@
       </div>
     </footer>
 
-    <!-- CHATBOT WIDGET -->
-    <div class="chatbot-widget" id="chatbotWidget">
-      <div class="chatbot-panel" id="chatbotPanel">
-        <div class="chatbot-header">
-          <div class="chatbot-avatar">
-            <span>◆</span>
-          </div>
-          <div class="chatbot-title">
-            <div class="chatbot-name">DIS AI Assistant</div>
-            <div class="chatbot-status"><span class="online-dot"></span> Online</div>
-          </div>
-          <button class="chatbot-close" id="chatbotClose">✕</button>
-        </div>
-        <div class="chatbot-messages" id="chatbotMessages"></div>
-        <div class="chatbot-quick-replies" id="quickReplies">
-          <button class="quick-reply" data-reply="estimate">Get Free Estimate</button>
-          <button class="quick-reply" data-reply="emergency">Emergency Repair</button>
-          <button class="quick-reply" data-reply="solar">Solar Info</button>
-          <button class="quick-reply" data-reply="areas">Service Areas</button>
-        </div>
-        <div class="chatbot-input-row">
-          <input type="text" class="chatbot-input" id="chatbotInput" placeholder="Type a message..." />
-          <button class="chatbot-send" id="chatbotSend">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-          </button>
-        </div>
-      </div>
-      <button class="chatbot-trigger" id="chatbotTrigger">
-        <span class="chatbot-diamond">◆</span>
-        <span class="chatbot-label">Chat with us</span>
-      </button>
-    </div>
 
-    <script type="module" src="/src/main.ts"></script>
-      <!-- Hero Section with Video -->
-      <section id="hero" style="text-align:center; padding: 3rem 0; background: #f8f9fa;">
-        <h1 style="font-size:2.5rem; margin-bottom:1rem;">Welcome to Diamond Roofing</h1>
-        <p style="font-size:1.2rem; margin-bottom:2rem;">Your trusted partner for premium roofing solutions.</p>
-        <div style="max-width: 700px; margin: 0 auto;">
-          <iframe title="vimeo-player" src="https://player.vimeo.com/video/1057724847?h=efd1fb9380" width="100%" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen style="border-radius:12px; box-shadow:0 4px 24px rgba(0,0,0,0.12);"></iframe>
-        </div>
-      </section>
-
-      <!-- FAQs Section -->
-      <section id="faqs" class="section faqs-section">
-        <div class="container">
-          <div class="section-header reveal">
-            <span class="section-tag">FAQs</span>
-            <h2>Frequently Asked Questions</h2>
-          </div>
-          <div class="faqs-grid">
-            <div class="faq-card">
-              <h3>What types of roofing do you specialize in?</h3>
-              <p>We offer installation and repair for asphalt shingles, metal roofing, tile, and flat roofs. Our team is trained for both residential and commercial projects.</p>
-            </div>
-            <div class="faq-card">
-              <h3>How long does a typical roof replacement take?</h3>
-              <p>Most residential roof replacements are completed in 1-3 days, depending on size and weather conditions. Commercial projects may take longer.</p>
-            </div>
-            <div class="faq-card">
-              <h3>Are your services insured and guaranteed?</h3>
-              <p>Yes, we are fully insured and offer a 10-year workmanship warranty on all new installations.</p>
-            </div>
-            <div class="faq-card">
-              <h3>Do you provide free estimates?</h3>
-              <p>Absolutely! Contact us to schedule a free, no-obligation estimate at your property.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Testimonials Section -->
-      <section id="testimonials" class="section testimonials-section">
-        <div class="container">
-          <div class="section-header reveal">
-            <span class="section-tag">Testimonials</span>
-            <h2>What Our Clients Say</h2>
-          </div>
-          <div class="testimonials-slider">
-            <div class="testimonial-card">
-              <div class="testimonial-quote">“Diamond Roofing exceeded our expectations! The crew was professional, fast, and the new roof looks amazing.”</div>
-              <div class="testimonial-author">
-                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah M." class="testimonial-avatar" />
-                <div>
-                  <span class="testimonial-name">Sarah M.</span>
-                  <span class="testimonial-role">Homeowner</span>
-                </div>
-              </div>
-            </div>
-            <div class="testimonial-card">
-              <div class="testimonial-quote">“We had a leak during a storm and they responded immediately. Highly recommend for reliability and quality!”</div>
-              <div class="testimonial-author">
-                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="James T." class="testimonial-avatar" />
-                <div>
-                  <span class="testimonial-name">James T.</span>
-                  <span class="testimonial-role">Business Owner</span>
-                </div>
-              </div>
-            </div>
-            <div class="testimonial-card">
-              <div class="testimonial-quote">“Great communication, fair pricing, and top-notch workmanship. Will use again!”</div>
-              <div class="testimonial-author">
-                <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Priya S." class="testimonial-avatar" />
-                <div>
-                  <span class="testimonial-name">Priya S.</span>
-                  <span class="testimonial-role">Property Manager</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-
+<script type="module" src="/src/main.ts"></script>
+</body>
+</html>

@@ -26,3 +26,24 @@ if (document.readyState === 'loading') {
 } else {
   init();
 }
+function initFAQ(): void {
+  const faqItems = document.querySelectorAll(".faq-item");
+
+  faqItems.forEach(item => {
+    const question = item.querySelector(".faq-question");
+
+    question?.addEventListener("click", () => {
+      // Close others (optional but cleaner)
+      faqItems.forEach(i => {
+        if (i !== item) i.classList.remove("active");
+      });
+
+      item.classList.toggle("active");
+    });
+  });
+}
+
+// Run after DOM loads
+document.addEventListener("DOMContentLoaded", () => {
+  initFAQ();
+});
