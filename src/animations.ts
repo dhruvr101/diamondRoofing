@@ -198,62 +198,30 @@ export function initParallax(): void {
   });
 }
 
+// ---------- MAP ANIMATION ----------
+export function initMapAnimation(): void {
+  const inner = document.querySelector<HTMLElement>('.ca-map-inner');
+  if (!inner) return;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          inner.classList.add('map-active');
+        } else {
+          inner.classList.remove('map-active');
+        }
+      });
+    },
+    { threshold: 0.3 }
+  );
+
+  observer.observe(inner);
+}
+
 // ---------- GALLERY ----------
 export function initGallery(): void {
-  initGalleryEntrance();
-  initGalleryTilt();
   initGalleryLightbox();
-}
-
-function initGalleryEntrance(): void {
-  const items = document.querySelectorAll<HTMLElement>('.gallery-item');
-  if (!items.length) return;
-
-  items.forEach((item, i) => {
-    const col = i % 3;
-    const fromX = col === 0 ? -50 : col === 2 ? 50 : 0;
-    const fromY = col === 1 ? 60 : 30;
-
-    gsap.fromTo(
-      item,
-      { opacity: 0, x: fromX, y: fromY, scale: 0.93 },
-      {
-        opacity: 1,
-        x: 0,
-        y: 0,
-        scale: 1,
-        duration: 0.72,
-        ease: 'power3.out',
-        delay: (i % 3) * 0.08,
-        scrollTrigger: {
-          trigger: item,
-          start: 'top 88%',
-          once: true,
-        },
-      }
-    );
-  });
-}
-
-function initGalleryTilt(): void {
-  const items = document.querySelectorAll<HTMLElement>('.gallery-item[data-tilt]');
-
-  items.forEach((item) => {
-    item.addEventListener('mousemove', (e: MouseEvent) => {
-      const rect = item.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
-      const y = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
-      item.style.transform = `perspective(900px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) scale(1.03)`;
-      item.style.transition = 'transform 0.1s ease, box-shadow 0.3s ease';
-      item.style.zIndex = '3';
-    });
-
-    item.addEventListener('mouseleave', () => {
-      item.style.transform = 'perspective(900px) rotateY(0deg) rotateX(0deg) scale(1)';
-      item.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease';
-      item.style.zIndex = '';
-    });
-  });
 }
 
 function initGalleryLightbox(): void {

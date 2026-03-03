@@ -3,7 +3,7 @@
 import './style.css';
 import { initNav } from './nav';
 import { initCanvas } from './canvas';
-import { initTypewriter, initScrollReveal, initCounters, initParallax, initGallery } from './animations';
+import { initTypewriter, initScrollReveal, initCounters, initParallax, initGallery, initMapAnimation } from './animations';
 import { initFunnel } from './funnel';
 import { initChatbot } from './chatbot';
 
@@ -15,6 +15,7 @@ function init() {
   initCounters();
   initParallax();
   initGallery();
+  initMapAnimation();
   initFunnel();
   initChatbot();
 }
