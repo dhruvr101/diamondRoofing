@@ -34,7 +34,7 @@ const RESPONSES: Record<IntentKey, BotResponse[]> = {
   ],
   default: [
     { text: "Here are some common questions about our company:" },
-    { text: "**Why choose Diamond in the Sky Roofing over others?**\n- We’re true roofing specialists, not just solar installers.\n- We guarantee leak-free work and stand behind every job.\n- We’re local, licensed, and owner-led.\n- 24/7 emergency service.\n- Free estimates and honest advice.\n- Hundreds of 5-star reviews.\n\n**Do you offer emergency service?**\n- Yes, 24/7 emergency roofing is available. Call/text 760-410-2340.\n\n**Are you licensed and insured?**\n- Yes, CA License #1117747. Fully insured.\n\n**Do you work with solar?**\n- Yes, we do solar install, removal, and re-install — always leak-free.\n\n**What areas do you serve?**\n- San Diego, Riverside, and Orange County.\n\nAsk anything else or type 'estimate' for a quote!", delay: 1200 }
+    { text: "**Why choose Diamond in the Sky Roofing over others?**\n- We're true roofing specialists, not just solar installers.\n- We guarantee leak-free work and stand behind every job.\n- We're local, licensed, and owner-led.\n- 24/7 emergency service.\n- Free estimates and honest advice.\n- Hundreds of 5-star reviews.\n\n**Do you offer emergency service?**\n- Yes, 24/7 emergency roofing is available. Call/text 760-410-2340.\n\n**Are you licensed and insured?**\n- Yes, CA License #1117747. Fully insured.\n\n**Do you work with solar?**\n- Yes, we do solar install, removal, and re-install — always leak-free.\n\n**What areas do you serve?**\n- San Diego, Riverside, and Orange County.\n\nAsk anything else or type 'estimate' for a quote!", delay: 1200 }
   ],
 };
 
@@ -63,10 +63,12 @@ function wait(ms: number): Promise<void> {
 
 function detectIntent(text: string): IntentKey {
   const lower = text.toLowerCase();
-  if (/emergency|urgent|leak|storm|damage|asap/.test(lower)) return 'emergency';
-  if (/estimate|quote|price|cost|free/.test(lower)) return 'estimate';
   if (/solar|panel|energy|sun|electric/.test(lower)) return 'solar';
   if (/area|location|cover|city|county|where/.test(lower)) return 'areas';
+  if (/licens|insur|certif/.test(lower)) return 'licensed';
+  if (/why.*you|choose|better|different|stand out|review/.test(lower)) return 'whychoose';
+  // Any service/problem request → lead flow
+  if (/issue|problem|fix|repair|replac|inspect|estimate|quote|price|cost|need|help|roof|leak|damage|storm|emergency|urgent|asap|broken|old roof|new roof|install/.test(lower)) return 'estimate';
   return 'default';
 }
 
@@ -85,63 +87,21 @@ async function getAIReply(message: string, history: Array<{ role: 'user' | 'assi
   }
 }
 
-// ---- Lead Capture (Step 3) ----
-
-type LeadService = 'Repair' | 'Replacement' | 'Inspection' | 'Emergency' | 'Solar' | 'Other';
-type LeadProperty = 'Residential' | 'Commercial';
+// ---- Lead Capture ----
 
 type LeadDraft = {
-  service?: LeadService;
-  property?: LeadProperty;
-  cityOrZip?: string;
-  address?: string;
-  roofType?: string;     // shingle/tile/flat/metal/unknown
-  approxSize?: string;   // sq ft or small/medium/large
-  issue?: string;        // leak/storm/age/etc
-  timeline?: string;     // asap/this month/1-3 months/planning
-  name?: string;
+  issue?: string;
+  zip?: string;
   phone?: string;
-  email?: string;
 };
 
-type LeadStepKey =
-  | 'service'
-  | 'property'
-  | 'cityOrZip'
-  | 'roofType'
-  | 'approxSize'
-  | 'issue'
-  | 'timeline'
-  | 'name'
-  | 'phone'
-  | 'email'
-  | 'confirm';
+type LeadStepKey = 'issue' | 'zip' | 'phone';
 
-const LEAD_STEPS: Array<{ key: LeadStepKey; question: string; optional?: boolean }> = [
-  { key: 'service', question: "What do you need help with? (Repair / Replacement / Inspection / Emergency / Solar)" },
-  { key: 'property', question: "Is this **Residential** or **Commercial**?" },
-  { key: 'cityOrZip', question: "What city (or ZIP) is the property in?" },
-  { key: 'roofType', question: "What roof type? (Shingle / Tile / Flat / Metal / Not sure)" },
-  { key: 'approxSize', question: "Approx roof size? (sq ft if you know — or Small / Medium / Large)" },
-  { key: 'issue', question: "What’s the main issue or goal? (leak, storm damage, aging roof, new install, etc.)" },
-  { key: 'timeline', question: "When do you need service? (ASAP / This month / 1–3 months / Just planning)" },
-  { key: 'name', question: "What’s your full name?" },
+const LEAD_STEPS: Array<{ key: LeadStepKey; question: string }> = [
+  { key: 'issue', question: "What's going on with your roof? Give me a little detail and we'll get you taken care of." },
+  { key: 'zip', question: "What's your ZIP code?" },
   { key: 'phone', question: "Best phone number to reach you?" },
-  { key: 'email', question: "Email (optional) — you can type **skip** if you prefer.", optional: true },
-  { key: 'confirm', question: "Perfect. Want me to submit this request to our team? (yes/no)" },
 ];
-
-function normalizeYesNo(text: string): 'yes' | 'no' | null {
-  const t = text.trim().toLowerCase();
-  if (/^(y|yes|yeah|yep|sure|ok|okay)$/i.test(t)) return 'yes';
-  if (/^(n|no|nope|nah)$/i.test(t)) return 'no';
-  return null;
-}
-
-function isSkip(text: string) {
-  const t = text.trim().toLowerCase();
-  return t === 'skip' || t === 'pass';
-}
 
 export function initChatbot(): void {
   const trigger = document.getElementById('chatbotTrigger')!;
@@ -151,6 +111,8 @@ export function initChatbot(): void {
   const input = document.getElementById('chatbotInput') as HTMLInputElement;
   const sendBtn = document.getElementById('chatbotSend')!;
   const quickReplies = document.getElementById('quickReplies')!;
+  const bubble = document.getElementById('chatbotBubble')!;
+  const bubbleClose = document.getElementById('chatbotBubbleClose')!;
 
     // Simple mobile scroll lock when input is focused
     input.addEventListener('focus', () => {
@@ -231,7 +193,29 @@ export function initChatbot(): void {
     setTimeout(() => { if (!isOpen) panel.style.display = 'none'; }, 320);
   }
 
-  trigger.addEventListener('click', () => { if (isOpen) closeChat(); else openChat(); });
+  // Show bubble after 3s, hide when chat opens or dismissed
+  function hideBubble() {
+    bubble.classList.remove('visible');
+  }
+
+  setTimeout(() => {
+    if (!hasOpened) bubble.classList.add('visible');
+  }, 3000);
+
+  bubbleClose.addEventListener('click', (e) => {
+    e.stopPropagation();
+    hideBubble();
+  });
+
+  bubble.addEventListener('click', () => {
+    hideBubble();
+    if (!isOpen) openChat();
+  });
+
+  trigger.addEventListener('click', () => {
+    hideBubble();
+    if (isOpen) closeChat(); else openChat();
+  });
   closeBtn.addEventListener('click', closeChat);
 
   // ---- Lead flow helpers ----
@@ -254,10 +238,7 @@ export function initChatbot(): void {
     leadActive = true;
     leadStepIndex = 0;
     leadDraft = {};
-    runSequence(RESPONSES.estimate, myId).then(() => {
-      if (myId !== sequenceId) return;
-      askLeadQuestion(myId);
-    });
+    askLeadQuestion(myId);
   }
 
   function cancelLeadFlow() {
@@ -270,65 +251,37 @@ export function initChatbot(): void {
     );
   }
 
-  function renderLeadSummary(): string {
-    const rows: Array<[string, string | undefined]> = [
-      ["Service", leadDraft.service],
-      ["Property", leadDraft.property],
-      ["City/ZIP", leadDraft.cityOrZip],
-      ["Roof Type", leadDraft.roofType],
-      ["Approx Size", leadDraft.approxSize],
-      ["Issue", leadDraft.issue],
-      ["Timeline", leadDraft.timeline],
-      ["Name", leadDraft.name],
-      ["Phone", leadDraft.phone],
-      ["Email", leadDraft.email],
-    ];
-
-    const lines = rows
-      .filter(([, v]) => v && v.trim().length > 0)
-      .map(([k, v]) => `• <strong>${k}:</strong> ${escapeHtml(v as string)}`)
-      .join('<br>');
-
-    const contactLink = `<a href="#contact" style="text-decoration:underline;">open the contact form</a>`;
-    return `${lines}<br><br>You can also ${contactLink} or call/text <strong>760-410-2340</strong>.`;
-  }
-
   function setLeadField(key: LeadStepKey, value: string) {
     const v = value.trim();
     switch (key) {
-      case 'service':
-        leadDraft.service = (v.charAt(0).toUpperCase() + v.slice(1)) as LeadService;
-        break;
-      case 'property':
-        leadDraft.property = (v.toLowerCase().includes('comm') ? 'Commercial' : 'Residential');
-        break;
-      case 'cityOrZip':
-        leadDraft.cityOrZip = v;
-        break;
-      case 'roofType':
-        leadDraft.roofType = v;
-        break;
-      case 'approxSize':
-        leadDraft.approxSize = v;
-        break;
-      case 'issue':
-        leadDraft.issue = v;
-        break;
-      case 'timeline':
-        leadDraft.timeline = v;
-        break;
-      case 'name':
-        leadDraft.name = v;
-        break;
-      case 'phone':
-        leadDraft.phone = v;
-        break;
-      case 'email':
-        leadDraft.email = v;
-        break;
-      default:
-        break;
+      case 'issue': leadDraft.issue = v; break;
+      case 'zip':   leadDraft.zip   = v; break;
+      case 'phone': leadDraft.phone = v; break;
     }
+  }
+
+  async function submitLead(myId: number) {
+    const typingEl = showTypingIndicator();
+    try {
+      const res = await fetch("http://localhost:3001/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(leadDraft),
+      });
+      typingEl.remove();
+      if (myId !== sequenceId) return;
+      if (res.ok) {
+        addMessage('bot', formatText("Perfect — we'll shoot you a call shortly!\n\nIf it's urgent, call/text **760-410-2340** anytime."));
+      } else {
+        addMessage('bot', formatText("Hmm, something went wrong sending that. Please call/text **760-410-2340** directly."));
+      }
+    } catch {
+      typingEl.remove();
+      addMessage('bot', formatText("Couldn't send — please call/text **760-410-2340** directly."));
+    }
+    leadActive = false;
+    leadStepIndex = 0;
+    leadDraft = {};
   }
 
   async function handleLeadInput(text: string) {
@@ -343,74 +296,13 @@ export function initChatbot(): void {
     const step = LEAD_STEPS[leadStepIndex];
     if (!step) return;
 
-// confirm step
-if (step.key === 'confirm') {
-  const yn = normalizeYesNo(text);
-
-  if (!yn) {
-    addMessage('bot', formatText("Please reply **yes** or **no**."));
-    return;
-  }
-
-  if (yn === 'no') {
-    leadActive = false;
-    addMessage(
-      'bot',
-      formatText("All good. If you want, you can still call/text **760-410-2340** or use the contact form.")
-    );
-    return;
-  }
-
-  // 🔥 YES → Send to backend
-  const typingEl = showTypingIndicator();
-
-  try {
-    const res = await fetch("http://localhost:3001/api/lead", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(leadDraft),
-    });
-
-    typingEl.remove();
-
-    if (res.ok) {
-      addMessage(
-        'bot',
-        formatText("✅ Sent! Our team will contact you shortly.\n\nIf urgent, call/text **760-410-2340**.")
-      );
-    } else {
-      addMessage(
-        'bot',
-        formatText("⚠️ I couldn’t submit it right now. Please call/text **760-410-2340**.")
-      );
-    }
-  } catch (err) {
-    typingEl.remove();
-    addMessage(
-      'bot',
-      formatText("⚠️ Submission failed. Please call/text **760-410-2340**.")
-    );
-  }
-
-  leadActive = false;
-  leadStepIndex = 0;
-  leadDraft = {};
-  return;
-}
-
-    // optional email step
-    if (step.optional && isSkip(text)) {
-      leadStepIndex++;
-      await askLeadQuestion(myId);
-      return;
-    }
-
     setLeadField(step.key, text);
     leadStepIndex++;
 
-    // if next step is confirm, show summary first
-    if (LEAD_STEPS[leadStepIndex]?.key === 'confirm') {
-      addMessage('bot', renderLeadSummary());
+    // All 3 fields collected — submit automatically
+    if (leadStepIndex >= LEAD_STEPS.length) {
+      await submitLead(myId);
+      return;
     }
 
     await askLeadQuestion(myId);
