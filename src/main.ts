@@ -66,13 +66,13 @@ function init() {
 
   // Mobile-only auto-scroll for testimonials, centers each card, loops, and supports swipe
   if (window.innerWidth <= 600) {
-    const slider = document.querySelector('.testimonials-slider');
-    const cards = slider ? Array.from(slider.querySelectorAll('.testimonial-card')) : [];
+    const slider = document.querySelector<HTMLElement>('.testimonials-slider');
+    const cards = slider ? Array.from(slider.querySelectorAll<HTMLElement>('.testimonial-card')) : [];
     let currentIndex = 0;
     const totalCards = Math.min(cards.length, 6); // Oscillate over 6 testimonials
     function scrollToCard(index: number) {
       if (!slider || totalCards === 0) return;
-      const card = cards[index];
+      const card = cards[index] as HTMLElement;
       const left = card.offsetLeft - (slider.clientWidth - card.clientWidth) / 2;
       slider.scrollTo({ left, behavior: 'smooth' });
     }
@@ -85,10 +85,10 @@ function init() {
 
       // Swipe support
       let touchStartX = 0;
-      slider.addEventListener('touchstart', (e) => {
+      slider.addEventListener('touchstart', (e: TouchEvent) => {
         touchStartX = e.touches[0].clientX;
       }, { passive: true });
-      slider.addEventListener('touchend', (e) => {
+      slider.addEventListener('touchend', (e: TouchEvent) => {
         const dx = e.changedTouches[0].clientX - touchStartX;
         if (Math.abs(dx) > 50) {
           if (dx < 0) {
@@ -105,10 +105,13 @@ function init() {
 
 // Run after DOM is ready
 if (document.readyState === 'loading') {
-
-  document.addEventListener('DOMContentLoaded', init);
+  document.addEventListener('DOMContentLoaded', () => {
+    init();
+    initTestimonialCarousel();
+  });
 } else {
   init();
+  initTestimonialCarousel();
 }
 function initFAQ(): void {
   const faqItems = document.querySelectorAll(".faq-item");
