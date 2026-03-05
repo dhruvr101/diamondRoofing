@@ -1,35 +1,255 @@
 {
   "business": {
     "name": "Diamond in the Sky Roofing",
+    "abbreviation": "DIS",
     "license": "1117747",
     "phone": "760-410-2340",
     "owner": "Duane Sibley",
-    "location": "San Marcos, California, United States"
+    "founded": "2020",
+    "location": "San Marcos, California",
+    "tagline": "Commercial · Industrial · Residential | San Diego · Riverside · Orange County",
+    "stats": {
+      "roofsCompleted": "1,000+",
+      "yearsInBusiness": "5+",
+      "countiesCovered": 3,
+      "emergencyService": "24/7"
+    },
+    "warranty": "10-year workmanship warranty on all new installations",
+    "about": "Diamond in the Sky Roofing was founded by Duane Sibley, who has grown it into a hardworking team dedicated to quality craftsmanship since 2020. Full transparency from initial consultation to final inspection. Uses only highest quality materials and latest roofing techniques.",
+    "values": [
+      "Transparency & Communication",
+      "Premium Quality Materials",
+      "Licensed, Bonded & Insured"
+    ]
   },
+
   "serviceAreas": {
     "counties": ["San Diego County", "Riverside County", "Orange County"],
-    "sanDiegoCountyCities": ["San Marcos","Carlsbad","Oceanside","Encinitas","Vista","Escondido","Poway","Rancho Bernardo","Mira Mesa","Clairemont","Pacific Beach","Del Mar","Solana Beach","Chula Vista","El Cajon","La Mesa","National City","Santee","Coronado","Imperial Beach","Fallbrook","Bonsall","Valley Center","Lemon Grove","4S Ranch"],
+    "sanDiegoCountyCities": [
+      "San Marcos", "Carlsbad", "Oceanside", "Encinitas", "Vista", "Escondido",
+      "Poway", "Rancho Bernardo", "Mira Mesa", "Clairemont", "Pacific Beach",
+      "Del Mar", "Solana Beach", "Chula Vista", "El Cajon", "La Mesa",
+      "National City", "Santee", "Coronado", "Imperial Beach", "Fallbrook",
+      "Bonsall", "Valley Center", "Lemon Grove", "4S Ranch", "La Jolla"
+    ],
+    "orangeCountyCities": ["Irvine", "Anaheim", "Santa Ana", "Laguna Niguel", "Mission Viejo", "San Clemente"],
+    "riversideCountyCities": ["Riverside", "Temecula", "Murrieta", "Menifee", "Corona", "Moreno Valley"],
     "notes": "If someone doesn't see their city listed, they can still contact DIS for confirmation."
   },
-  "services": [
-    "Residential Roofing",
-    "Commercial Roofing",
-    "Roof Repair",
-    "Roof Replacement",
-    "Emergency Roofing (24/7)",
-    "Solar Install",
-    "Solar Removal & Reinstall",
-    "Roof Inspections",
-    "Gutter Services",
-    "Skylights"
+
+  "services": {
+    "commercial": {
+      "description": "Full-service commercial roofing for offices, warehouses, retail centers, medical offices, industrial properties, and multi-family complexes.",
+      "systems": [
+        "TPO (Thermoplastic Polyolefin) — energy-efficient, heat-welded seams, popular for flat commercial roofs",
+        "EPDM (Ethylene Propylene Diene Monomer) — durable rubber roofing, excellent for large flat roofs",
+        "Modified Bitumen — asphalt-based, great for low-slope commercial roofs",
+        "Built-Up Roofing (BUR) — multiple layers of bitumen and reinforcing fabrics",
+        "Metal Roofing — standing seam, corrugated, long-lasting for warehouses and industrial buildings",
+        "Roof Coatings — reflective coatings to extend roof life and improve energy efficiency",
+        "Flat Roofing systems"
+      ],
+      "propertyTypes": [
+        "Office buildings and office parks",
+        "Warehouses and distribution centers",
+        "Retail centers and strip malls",
+        "Medical offices and healthcare facilities",
+        "Industrial properties and manufacturing buildings",
+        "Multi-family complexes and apartment buildings",
+        "HOA communities",
+        "Mixed-use commercial properties"
+      ],
+      "clients": ["Property managers", "Building owners", "Commercial real estate brokers", "Developers", "HOA boards"]
+    },
+    "residential": {
+      "description": "Complete residential roofing solutions tailored to your home, style, and budget.",
+      "systems": [
+        "Asphalt shingles",
+        "Metal roofing",
+        "Tile roofing",
+        "Flat roofing",
+        "Shingle roofing"
+      ]
+    },
+    "roofRepair": "Handles leaky roofs, missing shingles, storm damage — any repair big or small, with speed and precision.",
+    "roofReplacement": "Full roof replacement using only highest quality materials. Guides from material selection to seamless installation.",
+    "roofInspection": {
+      "description": "Detailed written roof inspection reports for both commercial and residential properties.",
+      "commercialInspectionReport": "Includes current condition, estimated remaining life, recommended repairs, and satisfies lender, buyer, and escrow requirements.",
+      "priorityTurnaround": "Available for real estate closing deadlines."
+    },
+    "emergency": {
+      "description": "24/7 emergency roofing service. Responds fast to protect property from further damage.",
+      "contact": "Call/text 760-410-2340 immediately for emergencies."
+    },
+    "solar": {
+      "description": "One contractor for both roof and solar. Clean, safe installation with zero leaks — guaranteed.",
+      "types": [
+        "Residential solar — high-efficiency panel installation for homes",
+        "Commercial solar — large-scale systems for businesses, warehouses, medical buildings, retail centers, apartment complexes",
+        "Solar removal & re-install — full cycle management when roof replacement is needed",
+        "Emergency solar repair — storm-damaged panels, system down"
+      ],
+      "features": [
+        "Cutting-edge solar technology for maximum efficiency",
+        "Expert installation by certified professionals",
+        "Affordable pricing with flexible financing plans",
+        "Compatible with all roofing types — tile, shingle, flat, metal",
+        "Commitment to sustainability & energy independence"
+      ]
+    },
+    "gutterServices": "Available",
+    "skylights": "Available"
+  },
+
+  "realEstate": {
+    "overview": "Diamond in the Sky Roofing is the trusted roofing partner for real estate professionals across Southern California. Whether closing a commercial deal or listing a residential property, a roof issue can kill a transaction. DIS keeps deals on track.",
+    "partnerTypes": [
+      "Commercial real estate brokers",
+      "Residential real estate agents",
+      "Property managers",
+      "Building owners buying or selling"
+    ],
+    "whyDISMattersInRealEstate": {
+      "commercialTransactions": {
+        "summary": "Buyers and lenders require roof certifications before closing on commercial properties.",
+        "details": "DIS provides fast, detailed inspection reports that give buyers confidence and satisfy lender requirements for offices, retail, industrial, and multi-family properties. A certified or recently repaired roof reduces deal risk and can be used as a negotiating point.",
+        "impact": "Commercial roof condition directly affects cap rates, NOI (Net Operating Income), and property valuation. A roof in poor condition can reduce selling price, lengthen time on market, or kill a deal entirely."
+      },
+      "preListing": {
+        "summary": "Pre-listing roof inspections help sellers understand roof condition upfront.",
+        "details": "Listing a property with undisclosed roof issues is a liability. DIS pre-listing inspections help sellers avoid surprise renegotiations during escrow, justify asking price with documentation, and present a stronger listing to buyers."
+      },
+      "closingDeadlines": {
+        "summary": "DIS provides priority scheduling for agents and brokers.",
+        "details": "Inspections, reports, and repairs are completed quickly so deals don't fall through due to a slow roofer. Same-day and next-day service available for time-sensitive transactions."
+      },
+      "roofConditionAndValue": {
+        "summary": "Roof condition directly impacts property value in both commercial and residential real estate.",
+        "details": "In commercial real estate: a failing roof lowers cap rates, increases operating expenses, and reduces NOI — all of which compress property value in income-based appraisals. A certified, repaired, or new roof can meaningfully increase sale price. In residential real estate: a new or recently repaired roof is a strong selling point that reduces buyer negotiating leverage and can accelerate sale timeline."
+      },
+      "lenderAndEscrowRequirements": {
+        "summary": "Lenders often require roof inspection reports before approving financing.",
+        "details": "DIS provides written inspection reports that include: current condition, estimated remaining useful life, and recommended repairs. These satisfy SBA lender requirements, conventional commercial loan requirements, and escrow documentation requests."
+      },
+      "trustedVendorRelationship": {
+        "summary": "Build your roster of reliable vendors with DIS as your go-to roofing partner.",
+        "details": "DIS offers real estate professionals a trusted roofing partner for all clients — commercial and residential. Provides written estimates, repair timelines, and professional communication that clients expect. Builds long-term referral relationships."
+      },
+      "residentialResaleSupport": {
+        "summary": "Roof inspections and repairs that smooth the escrow process for residential sales.",
+        "details": "From single-family homes to HOA communities, DIS provides pre-listing and buyer inspections. Sellers can offer buyers a new or recently repaired roof — a powerful negotiating tool in any market. Reduces inspection contingency issues during escrow."
+      }
+    },
+    "partnerBenefits": [
+      "Priority scheduling for agent and broker referrals",
+      "Written inspection reports for lenders, buyers, and escrow",
+      "Commercial and residential coverage",
+      "Licensed, bonded & fully insured — Lic#1117747",
+      "Same-day emergency response available",
+      "Professional communication and documentation throughout",
+      "Fast turnaround to meet closing deadlines",
+      "Preferred partner network across San Diego, Riverside, and Orange County"
+    ],
+    "howToPartner": "Call or text 760-410-2340 to set up a preferred partner relationship. Or fill out the estimate form on the website."
+  },
+
+  "commercialRoofingDetails": {
+    "whyCommercialRoofingMatters": "Commercial properties represent significant capital investments. A failing roof puts the entire building at risk — water intrusion can damage inventory, equipment, electrical systems, and structural components. Regular maintenance and timely replacement protect asset value.",
+    "tpoRoofing": {
+      "name": "TPO (Thermoplastic Polyolefin)",
+      "bestFor": "Large flat commercial roofs, warehouses, retail centers",
+      "benefits": ["Energy-efficient — reflects UV rays reducing cooling costs", "Heat-welded seams for superior leak resistance", "Lightweight", "Environmentally friendly", "Typically 15–25 year lifespan"]
+    },
+    "epdmRoofing": {
+      "name": "EPDM (Ethylene Propylene Diene Monomer)",
+      "bestFor": "Large flat commercial roofs, office buildings, industrial",
+      "benefits": ["Excellent durability and flexibility", "Resistant to UV and ozone", "Low maintenance", "Cost-effective for large roofs", "Lifespan 20–30 years"]
+    },
+    "modifiedBitumen": {
+      "name": "Modified Bitumen",
+      "bestFor": "Low-slope commercial and industrial roofs",
+      "benefits": ["Strong resistance to foot traffic", "Good tensile strength", "Easy to repair", "Works well in temperature extremes"]
+    },
+    "metalRoofing": {
+      "name": "Metal Roofing (Commercial)",
+      "bestFor": "Warehouses, industrial, retail, steep-slope commercial",
+      "benefits": ["Extremely long lifespan (40–70 years)", "Highly durable", "Low maintenance", "Excellent for large spans", "Energy efficient"]
+    },
+    "roofCoatings": {
+      "name": "Roof Coatings",
+      "bestFor": "Extending life of existing commercial roofs",
+      "benefits": ["Adds 10–15+ years to existing roof", "Reflective coatings lower energy costs", "Cost-effective alternative to full replacement", "Reduces landfill waste"]
+    },
+    "maintenanceAndInspection": "DIS recommends commercial roof inspections at least once or twice per year, and after major storm events. Regular maintenance prevents small issues from becoming costly failures and preserves warranty coverage."
+  },
+
+  "faqs": [
+    {
+      "q": "Do you work with real estate agents and commercial brokers?",
+      "a": "Yes — we partner with real estate agents, commercial brokers, and property managers across Southern California. We provide pre-listing roof inspections, buyer inspection reports, lender-ready documentation, and fast repairs to keep transactions on schedule. Call us to set up a preferred partner relationship."
+    },
+    {
+      "q": "What commercial roofing systems do you install?",
+      "a": "We specialize in TPO, EPDM, modified bitumen, built-up roofing (BUR), metal roofing, and coatings for commercial buildings. We service office parks, retail centers, warehouses, industrial buildings, medical offices, and multi-family complexes."
+    },
+    {
+      "q": "Can you provide roof inspection reports for commercial property closings?",
+      "a": "Absolutely. We provide detailed written roof inspection reports for commercial property transactions that satisfy lender, buyer, and escrow requirements. Reports include current condition, estimated remaining life, and recommended repairs. Priority turnaround available for closing deadlines."
+    },
+    {
+      "q": "What types of roofing do you specialize in?",
+      "a": "We offer installation and repair for asphalt shingles, metal roofing, tile, flat roofs, TPO, EPDM, and modified bitumen. Our team handles both residential and commercial projects."
+    },
+    {
+      "q": "How long does a typical roof replacement take?",
+      "a": "Most residential roof replacements are completed in 1–3 days depending on size and weather. Commercial projects vary based on building size and system type."
+    },
+    {
+      "q": "Are your services insured and guaranteed?",
+      "a": "Yes, we are fully licensed (CA #1117747), bonded, and insured. We provide a 10-year workmanship warranty on all new installations."
+    },
+    {
+      "q": "Do you provide free estimates?",
+      "a": "Absolutely. Contact us anytime to schedule a free, no-obligation estimate. Use the website form or call/text 760-410-2340."
+    },
+    {
+      "q": "Do you do solar?",
+      "a": "Yes — we handle solar installation, removal, and reinstall for both residential and commercial properties. We are roofing experts first, solar specialists second, guaranteeing leak-free installs every time."
+    },
+    {
+      "q": "What areas do you serve?",
+      "a": "We serve San Diego County, Riverside County, and Orange County. Cities include San Marcos, Carlsbad, Oceanside, Encinitas, Escondido, Poway, Rancho Bernardo, Temecula, Murrieta, Irvine, and many more."
+    },
+    {
+      "q": "How does roof condition affect commercial property value?",
+      "a": "In commercial real estate, a poor roof condition directly impacts cap rates, NOI, and property valuation. Lenders may require repairs or replacements before approving loans. A certified or new roof can increase sale price, reduce time on market, and prevent deal fall-throughs."
+    },
+    {
+      "q": "Can you help before a real estate closing?",
+      "a": "Yes — we offer priority scheduling for real estate transactions. We can perform inspections, provide written reports for lenders, and complete repairs fast to meet closing deadlines. Contact us as early as possible to ensure availability."
+    }
   ],
-  "positioning": [
-    "Roofing experts first, solar specialists second (leak-free installs).",
-    "Free estimates available.",
-    "Emergency roofing available 24/7."
-  ],
+
+  "positioning": {
+    "keyPoints": [
+      "Roofing experts first, solar specialists second — leak-free installs guaranteed",
+      "Free estimates available — no obligation",
+      "Emergency roofing available 24/7",
+      "Priority scheduling for real estate agents and brokers",
+      "Owner-led team — Duane Sibley personally oversees quality",
+      "Hundreds of 5-star reviews",
+      "Fully transparent from consultation to final inspection",
+      "Licensed, bonded, and fully insured — CA Lic #1117747",
+      "10-year workmanship warranty on new installations"
+    ],
+    "differentiators": "DIS is not just a solar company that also does roofing — they are roofing specialists. This means every installation, whether with or without solar, is done correctly with no leaks. Real estate professionals trust DIS because they deliver fast reports, professional documentation, and reliable service that keeps deals on track."
+  },
+
   "cta": {
     "callText": "Call/Text 760-410-2340",
-    "estimate": "Use the website free estimate form or request via chat."
+    "estimate": "Free estimate form on the website — takes less than 2 minutes, no obligation, response within 24 hours.",
+    "realEstatePartners": "Call 760-410-2340 to set up a preferred partner relationship for real estate referrals.",
+    "emergency": "Active leak or storm damage? Call/text 760-410-2340 immediately — 24/7 emergency response."
   }
 }

@@ -7,10 +7,11 @@ gsap.registerPlugin(ScrollTrigger);
 
 // ---------- TYPEWRITER ----------
 const LINES = [
-  'Premier Roofing & Solar in San Diego County',
-  'Licensed, Bonded & Fully Insured',
-  'Residential · Commercial · Emergency · Solar',
-  'Free Estimates — Call 760-410-2340',
+  'Commercial Roofing Experts in Southern California',
+  'Trusted by Real Estate Agents & Brokers',
+  'Commercial · Industrial · Residential · Solar',
+  'Free Estimates for Brokers & Property Owners',
+  'Licensed, Bonded & Fully Insured — Lic#1117747',
 ];
 
 export function initTypewriter(): void {

@@ -1,6 +1,6 @@
 // chatbot.ts — Hybrid AI + scripted chatbot widget (UI unchanged)
 
-type IntentKey = 'estimate' | 'emergency' | 'solar' | 'areas' | 'licensed' | 'whychoose' | 'default';
+type IntentKey = 'estimate' | 'emergency' | 'solar' | 'areas' | 'licensed' | 'whychoose' | 'commercial' | 'realestate' | 'inspection' | 'default';
 
 interface BotResponse {
   text: string;
@@ -31,6 +31,18 @@ const RESPONSES: Record<IntentKey, BotResponse[]> = {
   whychoose: [
     { text: "We're true roofing specialists, not just solar installers.", delay: 700 },
     { text: "• Leak-free installs guaranteed.\n• Local, licensed (CA #1117747), and owner-led.\n• 24/7 emergency service.\n• Free estimates and honest advice.\n• Hundreds of 5-star reviews.", delay: 900 },
+  ],
+  commercial: [
+    { text: "We're commercial roofing specialists serving Southern California! 🏢" },
+    { text: "**Commercial systems we install:**\n• TPO — energy-efficient flat roofing\n• EPDM — durable rubber roofing for large buildings\n• Modified Bitumen — low-slope commercial\n• Metal Roofing — warehouses & industrial\n• Built-Up Roofing (BUR)\n• Roof Coatings — extend roof life\n\n**Property types we serve:**\nOffice buildings, warehouses, retail centers, medical offices, industrial properties, multi-family complexes, and HOA communities.\n\nCall/text **760-410-2340** for a free commercial estimate!", delay: 1200 },
+  ],
+  realestate: [
+    { text: "We're proud partners of real estate agents and commercial brokers across Southern California! 🤝" },
+    { text: "**How DIS helps real estate professionals:**\n• Pre-listing roof inspections for residential & commercial\n• Written reports satisfying lender, buyer & escrow requirements\n• Fast turnaround to meet closing deadlines\n• Priority scheduling for agent & broker referrals\n• Roof repairs to keep transactions on track\n• In commercial real estate: roof condition affects cap rates, NOI & property valuation — we help protect your client's investment\n\nCall **760-410-2340** to set up a preferred partner relationship.", delay: 1200 },
+  ],
+  inspection: [
+    { text: "We provide detailed roof inspection reports for both commercial and residential properties. 📋" },
+    { text: "**Commercial inspection reports include:**\n• Current roof condition assessment\n• Estimated remaining useful life\n• Recommended repairs\n• Satisfies lender, buyer & escrow requirements\n\n**Priority turnaround available for closing deadlines.**\n\nResidential pre-listing inspections also available — helps sellers avoid surprise renegotiations and justify asking price.\n\nCall/text **760-410-2340** to schedule.", delay: 1100 },
   ],
   default: [
     { text: "Here are some common questions about our company:" },
@@ -67,8 +79,11 @@ function detectIntent(text: string): IntentKey {
   if (/area|location|cover|city|county|where/.test(lower)) return 'areas';
   if (/licens|insur|certif/.test(lower)) return 'licensed';
   if (/why.*you|choose|better|different|stand out|review/.test(lower)) return 'whychoose';
+  if (/commercial|tpo|epdm|flat roof|warehouse|retail|office building|industrial|multi.?family|modified bitumen|metal roof|bur|built.up/.test(lower)) return 'commercial';
+  if (/real estate|broker|agent|escrow|closing|listing|pre.?list|lender|transaction|cap rate|noi|property value|resale|buyer|seller/.test(lower)) return 'realestate';
+  if (/inspect|report|certif|document|lender report|roof report|condition report/.test(lower)) return 'inspection';
   // Any service/problem request → lead flow
-  if (/issue|problem|fix|repair|replac|inspect|estimate|quote|price|cost|need|help|roof|leak|damage|storm|emergency|urgent|asap|broken|old roof|new roof|install/.test(lower)) return 'estimate';
+  if (/issue|problem|fix|repair|replac|estimate|quote|price|cost|need|help|roof|leak|damage|storm|emergency|urgent|asap|broken|old roof|new roof|install/.test(lower)) return 'estimate';
   return 'default';
 }
 

@@ -1,3 +1,175 @@
+/* ---- HERO TAGS ---- */
+.hero-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin: 1rem 0 1.5rem;
+}
+.hero-tag {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.3rem 0.85rem;
+  border-radius: 999px;
+  letter-spacing: 0.02em;
+  backdrop-filter: blur(4px);
+}
+
+/* ---- COMMERCIAL FEATURED CARD ---- */
+.commercial-featured-card {
+  border: 2px solid var(--blue) !important;
+  box-shadow: 0 4px 24px rgba(37,99,235,0.13) !important;
+  position: relative;
+}
+.commercial-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: var(--blue);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+  z-index: 2;
+}
+
+/* ---- REAL ESTATE SECTION ---- */
+.re-section {
+  background: var(--bg-secondary);
+}
+.re-why-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+  margin-top: 2.5rem;
+}
+.re-why-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 1.75rem 1.5rem;
+  border-top: 3px solid var(--blue);
+  transition: var(--transition);
+}
+.re-why-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+}
+.re-why-icon {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+}
+.re-why-card h3 {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.6rem;
+}
+.re-why-card p {
+  font-size: 0.93rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.re-cta {
+  margin-top: 3rem;
+}
+.re-cta-inner {
+  background: linear-gradient(135deg, var(--blue) 0%, #1d4ed8 100%);
+  border-radius: var(--radius-xl);
+  padding: 2.5rem 3rem;
+  display: flex;
+  gap: 3rem;
+  align-items: flex-start;
+  color: #fff;
+}
+.re-cta-text {
+  flex: 1;
+}
+.re-cta-text h3 {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+.re-cta-text p {
+  font-size: 0.97rem;
+  opacity: 0.9;
+  line-height: 1.65;
+  margin-bottom: 1rem;
+}
+.re-checklist {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.re-checklist li {
+  font-size: 0.93rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0.95;
+}
+.re-checklist .check {
+  color: #fbbf24;
+  font-weight: 700;
+}
+.re-cta-action {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-self: center;
+  min-width: 200px;
+}
+.re-btn {
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+}
+
+/* ---- MOBILE: REAL ESTATE + HERO TAGS + COMMERCIAL ---- */
+@media (max-width: 900px) {
+  .re-why-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .re-cta-inner {
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 2rem 1.5rem;
+  }
+}
+@media (max-width: 600px) {
+  .re-why-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .re-why-card {
+    padding: 1.25rem 1rem;
+  }
+  .re-cta-inner {
+    padding: 1.5rem 1rem;
+  }
+  .re-cta-text h3 {
+    font-size: 1.3rem;
+  }
+  .hero-tags {
+    gap: 0.4rem;
+  }
+  .hero-tag {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.7rem;
+  }
+  .commercial-badge {
+    font-size: 0.65rem;
+  }
+}
+
 @media (max-width: 600px) {
   .services-grid {
     display: flex;
@@ -525,6 +697,14 @@ img { max-width: 100%; display: block; }
 
 .nav-links a:hover::after { width: 100%; }
 #navbar.scrolled .nav-links a::after { background: var(--blue); }
+
+.nav-links a.nav-highlight {
+  color: #fbbf24;
+  font-weight: 600;
+}
+#navbar.scrolled .nav-links a.nav-highlight {
+  color: var(--blue);
+}
 
 .nav-cta {
   display: flex;
