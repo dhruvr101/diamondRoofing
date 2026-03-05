@@ -97,7 +97,7 @@
   margin-left: auto;
   margin-right: auto;
   box-sizing: border-box;
-  overflow-x: hidden;
+  /* No horizontal scrolling for testimonials */
 }
 .testimonial-card {
   background: var(--bg-card);
@@ -120,23 +120,17 @@
     gap: 1rem;
     flex-direction: row;
     align-items: flex-start;
-    overflow-x: hidden;
-    flex-wrap: nowrap;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    -webkit-overflow-scrolling: touch;
-  }
-  .testimonials-slider::-webkit-scrollbar {
-    display: none;
+    flex-wrap: wrap;
+    /* No overflow or scrolling for testimonials */
   }
   .testimonial-card {
-    width: 80vw;
-    min-width: 80vw;
-    max-width: 80vw;
-    height: 320px;
-    min-height: 320px;
-    max-height: 320px;
-    flex: 0 0 80vw;
+    width: 90vw;
+    min-width: 260px;
+    max-width: 340px;
+    height: auto;
+    min-height: 260px;
+    max-height: none;
+    flex: 1 1 260px;
     box-sizing: border-box;
     padding: 1.5rem 1rem 1rem 1rem;
     display: flex;
