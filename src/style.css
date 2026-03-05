@@ -172,20 +172,22 @@
 
 @media (max-width: 600px) {
   .services-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
+     display: flex;
+     flex-direction: column;
+     gap: 0;
+     align-items: center;
+     justify-content: center;
   }
   .service-card {
-    width: 94vw;
-    max-width: 94vw;
-    margin: 0 auto;
-    border-radius: 16px;
-    box-shadow: var(--shadow-md);
-    position: sticky;
-    top: 1.5rem;
-    z-index: 1;
-    transition: box-shadow 0.2s, transform 0.2s;
+     width: 94vw;
+     max-width: 94vw;
+     margin: 16px auto;
+     border-radius: 16px;
+     box-shadow: var(--shadow-md);
+     position: static;
+     top: unset;
+     z-index: 1;
+     transition: box-shadow 0.2s, transform 0.2s;
   }
 }
 /* Prevent body scroll when chatbot input is focused on mobile */
