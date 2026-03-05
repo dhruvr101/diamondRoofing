@@ -17,48 +17,23 @@
     @media (max-width: 600px) {
       .chatbot-panel {
         position: fixed !important;
-        bottom: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        top: 0 !important;
-        width: 100vw !important;
-        max-width: 100vw !important;
-        height: 100dvh !important;
-        max-height: 100dvh !important;
+        bottom: 16px !important;
+        left: 8px !important;
+        right: 8px !important;
+        top: auto !important;
+        width: 96vw !important;
+        max-width: 96vw !important;
+        height: 70vh !important;
+        max-height: 70vh !important;
         box-sizing: border-box;
         z-index: 9999;
-        border-radius: 0 !important;
+        border-radius: 18px !important;
         overflow: hidden !important;
         background: #fff;
         display: flex;
         flex-direction: column;
         transition: none !important;
-      }
-      .chatbot-panel:focus-within {
-        top: 0 !important;
-        bottom: 0 !important;
-      }
-      @media (max-width: 600px) {
-        .chatbot-panel {
-          height: 100dvh !important;
-          max-height: 100dvh !important;
-        }
-        .chatbot-input-row {
-          position: fixed !important;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          width: 100vw !important;
-          background: #fff;
-          z-index: 10000;
-          box-shadow: 0 -2px 12px rgba(0,0,0,0.08);
-          padding: 0.75rem 1rem;
-        }
-        .chatbot-messages {
-          padding-bottom: 80px !important;
-          overflow-y: auto;
-          max-height: calc(100dvh - 120px);
-        }
+        box-shadow: 0 8px 32px rgba(0,0,0,0.12);
       }
       .chatbot-header {
         position: sticky;
@@ -68,48 +43,49 @@
         background: #fff;
         z-index: 10001;
         box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-        padding-top: env(safe-area-inset-top, 16px);
-        min-height: 56px;
+        min-height: 48px;
         display: flex;
         align-items: center;
+        border-radius: 18px 18px 0 0 !important;
       }
       .chatbot-avatar {
         margin-top: 0 !important;
-        max-height: 40px;
-        max-width: 40px;
+        max-height: 36px;
+        max-width: 36px;
         object-fit: cover;
         border-radius: 50%;
       }
       .chatbot-close {
         position: absolute;
-        top: 16px;
-        right: 16px;
+        top: 12px;
+        right: 12px;
         z-index: 10002;
         background: #fff;
         border-radius: 50%;
         box-shadow: 0 2px 8px rgba(0,0,0,0.10);
         border: none;
-        width: 32px;
-        height: 32px;
+        width: 28px;
+        height: 28px;
         display: flex;
         align-items: center;
         justify-content: center;
       }
       .chatbot-input-row {
-        position: fixed !important;
+        position: sticky !important;
         left: 0;
         right: 0;
         bottom: 0;
-        width: 100vw !important;
+        width: 100%;
         background: #fff;
         z-index: 10000;
         box-shadow: 0 -2px 12px rgba(0,0,0,0.08);
         padding: 0.75rem 1rem;
+        border-radius: 0 0 18px 18px !important;
       }
       .chatbot-messages {
         padding-bottom: 80px !important;
         overflow-y: auto;
-        max-height: calc(100vh - 120px);
+        max-height: calc(70vh - 120px);
       }
     }
     </style>
@@ -712,10 +688,10 @@
         </div>
         <div class="chatbot-messages" id="chatbotMessages"></div>
         <div class="chatbot-quick-replies" id="quickReplies">
-          <button class="quick-reply" data-reply="default">Why choose you over others?</button>
-          <button class="quick-reply" data-reply="default">Are you licensed and insured?</button>
-          <button class="quick-reply" data-reply="default">Do you offer emergency service?</button>
-          <button class="quick-reply" data-reply="default">What areas do you serve?</button>
+          <button class="quick-reply" data-reply="whychoose">Why choose you over others?</button>
+          <button class="quick-reply" data-reply="licensed">Are you licensed and insured?</button>
+          <button class="quick-reply" data-reply="emergency">Do you offer emergency service?</button>
+          <button class="quick-reply" data-reply="areas">What areas do you serve?</button>
         </div>
         <div class="chatbot-input-row">
           <input type="text" class="chatbot-input" id="chatbotInput" placeholder="Type a message..." />

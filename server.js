@@ -40,7 +40,7 @@ function loadKB() {
 
 app.post("/api/chat", async (req, res) => {
   try {
-    const { message } = req.body;
+    const { message, history = [] } = req.body;
     if (!message || typeof message !== "string") {
       return res.status(400).json({ reply: "Missing 'message' in request body." });
     }
@@ -74,6 +74,7 @@ ${JSON.stringify(KB, null, 2)}
       temperature: 0.4,
       messages: [
         { role: "system", content: systemPrompt },
+        ...history.slice(-10),
         { role: "user", content: message },
       ],
     });

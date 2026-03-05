@@ -1,6 +1,6 @@
 // chatbot.ts — Hybrid AI + scripted chatbot widget (UI unchanged)
 
-type IntentKey = 'estimate' | 'emergency' | 'solar' | 'areas' | 'default';
+type IntentKey = 'estimate' | 'emergency' | 'solar' | 'areas' | 'licensed' | 'whychoose' | 'default';
 
 interface BotResponse {
   text: string;
@@ -24,6 +24,13 @@ const RESPONSES: Record<IntentKey, BotResponse[]> = {
   ],
   areas: [
     { text: "We cover **San Diego County**, **Riverside County**, and **Orange County**. 🗺️", delay: 700 },
+  ],
+  licensed: [
+    { text: "Yes — CA License #1117747. We're fully licensed and insured for your peace of mind.", delay: 700 },
+  ],
+  whychoose: [
+    { text: "We're true roofing specialists, not just solar installers.", delay: 700 },
+    { text: "• Leak-free installs guaranteed.\n• Local, licensed (CA #1117747), and owner-led.\n• 24/7 emergency service.\n• Free estimates and honest advice.\n• Hundreds of 5-star reviews.", delay: 900 },
   ],
   default: [
     { text: "Here are some common questions about our company:" },
@@ -64,12 +71,12 @@ function detectIntent(text: string): IntentKey {
 }
 
 // ---- AI call (backend) ----
-async function getAIReply(message: string): Promise<string> {
+async function getAIReply(message: string, history: Array<{ role: 'user' | 'assistant'; content: string }>): Promise<string> {
   try {
     const res = await fetch("http://localhost:3001/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message }),
+      body: JSON.stringify({ message, history }),
     });
     const data = await res.json();
     return (data.reply || "").toString();
@@ -158,6 +165,9 @@ export function initChatbot(): void {
   let isOpen = false;
   let hasOpened = false;
   let sequenceId = 0;
+
+  // Chat history for AI context
+  const chatHistory: Array<{ role: 'user' | 'assistant'; content: string }> = [];
 
   // Lead flow state
   let leadActive = false;
@@ -415,8 +425,12 @@ if (step.key === 'confirm') {
 
       const myId = ++sequenceId;
 
-      // If they hit a common question, show pre-authored response
-      runSequence(RESPONSES[key] ?? RESPONSES.default, myId);
+      // Only answer the specific question, not all prebuilt answers
+      if (RESPONSES[key]) {
+        runSequence(RESPONSES[key], myId);
+      } else {
+        runSequence(RESPONSES.default.slice(0, 1), myId); // fallback: intro only
+      }
     });
   });
 
@@ -451,10 +465,19 @@ if (step.key === 'confirm') {
       return;
     }
 
+    // For prebuilt questions, only answer that specific question
+    if (intent !== 'default' && RESPONSES[intent]) {
+      const myId = ++sequenceId;
+      runSequence(RESPONSES[intent], myId);
+      return;
+    }
+
     // Otherwise: AI answer using KB server
     const myId = ++sequenceId;
     const typingEl = showTypingIndicator();
-    const aiReply = await getAIReply(text);
+    chatHistory.push({ role: 'user', content: text });
+    const aiReply = await getAIReply(text, chatHistory);
+    chatHistory.push({ role: 'assistant', content: aiReply });
     typingEl.remove();
     if (myId !== sequenceId) return;
 
