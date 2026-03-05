@@ -105,6 +105,27 @@ app.post("/api/lead", async (req, res) => {
   }
 });
 
+app.post("/api/contact", async (req, res) => {
+  try {
+    const data = req.body;
+    const lines = Object.entries(data)
+      .map(([k, v]) => `${k}: ${v}`)
+      .join('\n');
+
+    await transporter.sendMail({
+      from: process.env.LEAD_EMAIL_USER,
+      to: process.env.LEAD_TO_EMAIL,
+      subject: `New Estimate Request (Contact Form)`,
+      text: lines,
+    });
+
+    res.json({ ok: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ ok: false });
+  }
+});
+
 app.listen(3001, () => {
   console.log("Server running on http://localhost:3001");
 });

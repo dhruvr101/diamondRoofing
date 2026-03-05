@@ -88,12 +88,22 @@ export function initFunnel(): void {
   document.getElementById('back4')?.addEventListener('click', () => goToStep(3));
 
   const form = document.getElementById('contactForm') as HTMLFormElement;
-  form?.addEventListener('submit', (e) => {
+  form?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const inputs = form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input, textarea');
     const formData: Record<string, string> = { ...state };
     inputs.forEach(input => { if (input.placeholder) formData[input.placeholder] = input.value; });
-    console.log('Diamond Roofing Estimate Request:', formData);
+
+    try {
+      await fetch('http://localhost:3001/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+    } catch {
+      // still show success — email failure shouldn't block UX
+    }
+
     setProgress(5);
     showStep('success');
   });
