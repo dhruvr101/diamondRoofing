@@ -72,10 +72,12 @@ function detectIntent(text: string): IntentKey {
   return 'default';
 }
 
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3001";
+
 // ---- AI call (backend) ----
 async function getAIReply(message: string, history: Array<{ role: 'user' | 'assistant'; content: string }>): Promise<string> {
   try {
-    const res = await fetch("http://localhost:3001/api/chat", {
+    const res = await fetch(`${API_BASE}/api/chat`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message, history }),
@@ -263,7 +265,7 @@ export function initChatbot(): void {
   async function submitLead(myId: number) {
     const typingEl = showTypingIndicator();
     try {
-      const res = await fetch("http://localhost:3001/api/lead", {
+      const res = await fetch(`${API_BASE}/api/lead`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(leadDraft),

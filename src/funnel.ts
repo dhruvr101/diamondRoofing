@@ -95,7 +95,8 @@ export function initFunnel(): void {
     inputs.forEach(input => { if (input.placeholder) formData[input.placeholder] = input.value; });
 
     try {
-      await fetch('http://localhost:3001/api/contact', {
+      const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3001";
+      await fetch(`${API_BASE}/api/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
